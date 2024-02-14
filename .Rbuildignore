@@ -1,0 +1,17 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^data-raw$
+dev_history.R
+^dev$
+$run_dev.*
+^.here$
+^LICENSE\.md$
+^Dockerfile$
+^\.dockerignore$
+^docker-compose\.yml$
+^pof-stac-insileco-a3e9ea655e7a\.json$
+^\.github$
+^shiny-server\.conf$
+^shiny-server\.sh$
+^inst/raw_data/\.gitkeep$
+^\.vscode$

@@ -1,0 +1,16 @@
+default:
+  golem_name: iseShinyTemplate
+  golem_version: 0.0.0.9000
+  app_prod: no
+  # NB timeout set to NULL so no timeout
+
+production:
+  app_prod: yes
+  timeout_session_time: 300
+  timeout_closing_time: 30
+
+dev:
+  golem_wd: !expr golem::pkg_path()
+  timeout_session_time: 60
+  timeout_closing_time: 10
+
