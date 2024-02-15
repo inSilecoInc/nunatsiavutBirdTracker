@@ -12,13 +12,11 @@ RUN apt-get update \
 RUN install2.r remotes
 RUN Rscript -e 'remotes::install_version("bslib", upgrade = "never", version = "0.5.1", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("config", upgrade = "never", version = "0.3.2", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
-RUN Rscript -e 'remotes::install_version("config", upgrade = "never", version = "0.3.2", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("DT", upgrade = "never", version = "0.31", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("golem", upgrade = "never", version = "0.4.1", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("mapedit", upgrade = "never", version = "0.6.0", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("markdown", upgrade = "never", version = "1.12", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("osmdata", upgrade = "never", version = "0.2.5", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
-RUN Rscript -e 'remotes::install_version("pagedown", upgrade = "never", version = "0.20", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("rmarkdown", upgrade = "never", version = "2.25", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("shinyjs", upgrade = "never", version = "2.1", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 

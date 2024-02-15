@@ -1,5 +1,5 @@
-Package: iseShinyTemplate
-Title: inSileco Shiny Template
+Package: nunatsiavutBirdTracker
+Title: Birds tracker for Nunatsiavut Government
 Version: 0.1.0
 Authors@R: 
     person(given = "Team",
@@ -20,12 +20,11 @@ Imports:
     mapedit (>= 0.6.0),
     markdown (>= 1.12),
     osmdata (>= 0.2.5),
-    pagedown (>= 0.2),
     rmarkdown (>= 2.25),
     sf (>= 1.0.14),
     shiny (>= 1.7.5),
     shinyjs (>= 2.1),
-    whisker (>= 0.4.1)
+    lorem (>= 1.0.0)
 Suggests: 
     testthat (>= 3.0.0),
     utils
