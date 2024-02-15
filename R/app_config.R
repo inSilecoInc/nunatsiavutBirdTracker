@@ -9,7 +9,7 @@
 #'
 #' @noRd
 app_sys <- function(...) {
-    system.file(..., package = "iseShinyTemplate")
+  system.file(..., package = "nunatsiavutBirdTracker")
 }
 
 #' Read App Config

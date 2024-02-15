@@ -7,56 +7,33 @@
 #' @noRd
 
 app_ui <- function(request) {
-    tagList(
-        # Leave this function for adding external resources
-        golem_add_external_resources(),
-        # Your application UI logic
-        fluidPage(
-            theme = bslib::bs_theme(version = 5),
-            useShinyjs(),
-            mod_timeout_client_ui("session_timeout"),
-            sidebarLayout(
-                sidebarPanel(
-                    fluidRow(
-                        h2("inSileco Shiny Template"),
-                        tabsetPanel(
-                            id = "tabset_main_left",
-                            tabPanel(
-                                title = "Map",
-                                icon = icon("map"),
-                                mod_select_map_ui("map-setting")
-                            ),
-                            tabPanel(
-                                title = "Report",
-                                icon = icon("file"),
-                                mod_render_doc_ui("report")
-                            )
-                        )
-                    ),
-                    fluidRow(
-                        column(
-                            6,
-                            bookmarkButton(label = "Share this application view")
-                        )
-                    )
+    # Leave this function for adding external resources
+    golem_add_external_resources()
+    bslib::page_sidebar(
+        title = "Nunatsiavut bird trackers",
+        theme = bslib::bs_theme(
+            "bslib-dashboard-design" = "false"
+        ),
+        sidebar = bslib::sidebar(
+            position = "right",
+            width = "25%",
+            varSelectInput(
+                "var", "Choose your bird",
+                c("Test", "Test2")
+            ),
+            bslib::card(
+                fill = TRUE,
+                bslib::card_header(
+                    "Bird ID"
                 ),
-                mainPanel(
-                    tabsetPanel(
-                        id = "tabset_main_right",
-                        tabPanel(
-                            title = "Map",
-                            icon = icon("map"),
-                            mapedit::editModUI("map-select")
-                        ),
-                        tabPanel(
-                            title = "Report",
-                            icon = icon("file"),
-                            htmlOutput("preview_report")
-                        )
-                    )
+                bslib::card_body(
+                    fill = TRUE,
+                    bslib::card_title("Story"),
+                    lorem::ipsum(paragraphs = 3)
                 )
             )
-        )
+        ),
+        mapedit::editModUI("map-select")
     )
 }
 
@@ -77,7 +54,7 @@ golem_add_external_resources <- function() {
         favicon(),
         bundle_resources(
             path = app_sys("app/www"),
-            app_title = "iseShinyTemplate"
+            app_title = "nunatsiavutBirdTracker"
         )
     )
 }

@@ -5,14 +5,6 @@
 #' @noRd
 app_server <- function(input, output, session) {
     #
-    observe({
-        updateTabsetPanel(
-            session,
-            "tabset_main_right",
-            selected = input$tabset_main_left
-        )
-    })
-    #
     r <- reactiveValues(
         map = base_map(),
         geom_slc = NULL,
@@ -35,19 +27,6 @@ app_server <- function(input, output, session) {
             leafmap = r$map,
             id = "map-select"
         )
-    })
-
-    # reporting
-    mod_render_doc_server("report", r)
-    observeEvent(r$report_html, {
-        output$preview_report <- renderUI({
-            # looks like it has to be a relative path starting with www/
-            pth <- fs::path_rel(r$report_html, app_sys("app"))
-            tags$iframe(
-                # looks like path must be relative
-                id = "iframe_report", src = pth, width = "100%"
-            )
-        })
     })
 
     onSessionEnded(function() {

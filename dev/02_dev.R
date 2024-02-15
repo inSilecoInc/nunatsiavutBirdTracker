@@ -46,7 +46,7 @@ usethis::use_test("app")
 # Documentation
 
 ## Vignette ----
-usethis::use_vignette("iseShinyTemplate")
+usethis::use_vignette("nunatsiavutBirdTracker")
 devtools::build_vignettes()
 
 ## Code Coverage----
