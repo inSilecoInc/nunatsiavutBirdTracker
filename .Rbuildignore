@@ -9,9 +9,10 @@ $run_dev.*
 ^Dockerfile$
 ^\.dockerignore$
 ^docker-compose\.yml$
-^pof-stac-insileco-a3e9ea655e7a\.json$
 ^\.github$
 ^shiny-server\.conf$
 ^shiny-server\.sh$
 ^inst/raw_data/\.gitkeep$
 ^\.vscode$
+^vignettes/articles$
+^nunatsiavut-birds-f33436183827\.json$
