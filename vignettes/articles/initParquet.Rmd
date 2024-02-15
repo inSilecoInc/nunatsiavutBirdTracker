@@ -1,0 +1,74 @@
+---
+title: "Initialize S3 bucket with data locations"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(nunatsiavutBirdTracker)
+```
+
+# Read and cleanup data
+
+```{R}
+data(nunatsiavut_gulls)
+
+nunatsiavut_gulls <- nunatsiavut_gulls |>
+  janitor::remove_empty(c("rows", "cols")) |>
+  janitor::remove_constant() |>
+  dplyr::select(
+    tag_id = tag.local.identifier,
+    band_id = individual.local.identifier,
+    lon = location.long,
+    lat = location.lat,
+    datetime = timestamp,
+    species = individual.taxon.canonical.name,
+    vernacular = NULL
+  ) |>
+  dplyr::mutate(
+    vernacular = dplyr::case_when(
+      species == "Larus marinus" ~ "Great Black-backed Gull",
+      species == "Larus hyperboreus" ~ "Glaucous Gull",
+      species == "Larus argentatus" ~ "Herring Gull",
+      TRUE ~ "Undefined"
+    ),
+    tag_id = as.factor(tag_id)
+  ) |>
+  na.omit() |>
+  tibble::as_tibble()
+```
+
+# Write in parquet S3
+
+```{R}
+temp_parquet_gulls <- tempfile()
+
+arrow::write_dataset(
+  nunatsiavut_gulls,
+  temp_parquet_gulls,
+  basename_template = "data{i}.parquet",
+  format = "parquet",
+  partitioning = c("vernacular", "tag_id"),
+  existing_data_behavior = "overwrite"
+)
+```
+
+# Send to S3 bucket
+
+```{R}
+googleCloudStorageR::gcs_auth("./nunatsiavut-birds-f33436183827.json")
+bucket <- "nunatsiavut_birds"
+
+parquet_files <- list.files(temp_parquet_gulls, recursive = TRUE)
+
+parquet_files |> purrr::walk(\(f) {
+  googleCloudStorageR::gcs_upload(file.path(temp_parquet_gulls, f), name = f, bucket = bucket, predefinedAcl = "bucketLevel")
+})
+```
+
+

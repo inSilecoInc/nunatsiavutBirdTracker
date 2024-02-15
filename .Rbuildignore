@@ -15,3 +15,5 @@ $run_dev.*
 ^shiny-server\.sh$
 ^inst/raw_data/\.gitkeep$
 ^\.vscode$
+^vignettes/articles$
+nunatsiavut-birds-*.json
