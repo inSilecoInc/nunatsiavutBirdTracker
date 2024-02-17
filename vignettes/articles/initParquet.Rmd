@@ -37,7 +37,8 @@ nunatsiavut_gulls <- nunatsiavut_gulls |>
       species == "Larus argentatus" ~ "Herring Gull",
       TRUE ~ "Undefined"
     ),
-    tag_id = as.factor(tag_id)
+    tag_id = as.factor(tag_id),
+    datetime = as.POSIXct(datetime)
   ) |>
   na.omit() |>
   tibble::as_tibble()
@@ -51,7 +52,7 @@ temp_parquet_gulls <- tempfile()
 arrow::write_dataset(
   nunatsiavut_gulls,
   temp_parquet_gulls,
-  basename_template = "data{i}.parquet",
+  basename_template = "part-{i}.parquet",
   format = "parquet",
   partitioning = c("vernacular", "tag_id"),
   existing_data_behavior = "overwrite"
@@ -62,7 +63,7 @@ arrow::write_dataset(
 
 ```{R}
 googleCloudStorageR::gcs_auth("./nunatsiavut-birds-f33436183827.json")
-bucket <- "nunatsiavut_birds"
+bucket <- "bird-locations"
 
 parquet_files <- list.files(temp_parquet_gulls, recursive = TRUE)
 

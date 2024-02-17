@@ -11,16 +11,14 @@ app_ui <- function(request) {
     golem_add_external_resources()
     bslib::page_sidebar(
         title = "Nunatsiavut bird trackers",
+        class = "p-0",
         theme = bslib::bs_theme(
             "bslib-dashboard-design" = "false"
         ),
         sidebar = bslib::sidebar(
             position = "right",
             width = "25%",
-            varSelectInput(
-                "var", "Choose your bird",
-                c("Test", "Test2")
-            ),
+            mod_selectors_ui("selectors"),
             bslib::card(
                 fill = TRUE,
                 bslib::card_header(
