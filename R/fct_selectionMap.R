@@ -14,10 +14,10 @@ base_map <- function() {
     leaflet::leaflet(height = 2000) |>
         leafem::addMouseCoordinates() |>
         leaflet::addTiles() |>
-        leaflet::addProviderTiles("Esri.OceanBasemap", group = "OceaBasemap") |>
-        leaflet::addProviderTiles("OpenStreetMap", group = "OpenStreetMap") |>
+        leaflet::addProviderTiles("CartoDB.Positron", group = "Map") |>
+        leaflet::addProviderTiles("Esri.WorldImagery", group = "Satellite") |>
         leaflet::addLayersControl(
-            baseGroups = c("OpenStreetMap", "Ocean Basemap"),
+            baseGroups = c("Map", "Satellite"),
             position = "bottomleft"
         ) |>
         leaflet::fitBounds(
