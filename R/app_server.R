@@ -4,7 +4,7 @@
 #'
 #' @noRd
 app_server <- function(input, output, session) {
-    #
+
     r <- reactiveValues(
         map = base_map(),
         geom_slc = NULL,
@@ -13,6 +13,9 @@ app_server <- function(input, output, session) {
 
     # disclaimer
     mod_dialog_disclaimers_server("show_dialog", r)
+
+    # selectors
+    mod_selectors_server("selectors")
 
     # timeout
     mod_timeout_client_server("session_timeout", r)
