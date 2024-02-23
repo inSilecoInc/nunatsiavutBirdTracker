@@ -15,7 +15,7 @@ library(nunatsiavutBirdTracker)
 
 ```{R}
 library("move2")
-movebank_store_credentials("snpwong", "pigeon5!")
+movebank_store_credentials("xxxx", "xxxx")
 movebank_download_study_info(i_am_owner = TRUE)
 studyId <- 2854587542
 
@@ -50,7 +50,8 @@ events <- move2::movebank_retrieve("event", study_id = studyId) |>
   sf::st_as_sf(coords = c("location_lat", "location_long"), crs = 4326)
 
 inds_metadata <- events |>
-  dplyr::group_by(individual_id, tag_id) |>
+  sf::st_drop_geometry() |>
+  dplyr::group_by(mb_individual_id, mb_tag_id) |>
   dplyr::summarize(min = min(timestamp), max = max(timestamp)) |>
   dplyr::left_join(inds, by = c("mb_individual_id" = "id")) |>
   dplyr::left_join(tags, by = c("mb_tag_id" = "id"))

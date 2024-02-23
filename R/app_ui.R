@@ -17,14 +17,9 @@ app_ui <- function(request) {
             "bslib-dashboard-design" = "false"
         ),
         sidebar = bslib::sidebar(
-            position = "right",
+            position = "left",
             width = "25%",
-            bslib::card(
-                fill = TRUE,
-                bslib::card_body(
-                    mod_movebank_ui("selectors"),
-                )
-            ),
+            mod_selectors_ui("selectors"),
             bslib::card(
                 fill = TRUE,
                 bslib::card_header(
@@ -34,11 +29,11 @@ app_ui <- function(request) {
                     fill = TRUE,
                     img(src="www/img/201642.png", class="img-fluid", alt="Test"),
                     bslib::card_title("Story"),
-                    lorem::ipsum(paragraphs = 3)
+                    lorem::ipsum(paragraphs = 2)
                 )
             )
         ),
-        mapedit::editModUI("map-select")
+        mod_map_ui("map")
     )
 }
 

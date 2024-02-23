@@ -6,34 +6,26 @@
 app_server <- function(input, output, session) {
 
     r <- reactiveValues(
-        map = base_map(),
-        geom_slc = NULL,
-        disclaimer_agreed = FALSE
+        disclaimer_agreed = FALSE,
+        arrow_bucket = arrow::gs_bucket("bird-locations"),
+        arrow_dataset = NULL,
+        selectors = NULL
     )
 
     # disclaimer
     mod_dialog_disclaimers_server("show_dialog", r)
 
     # selectors
-    mod_movebank_server("selectors")
+    mod_selectors_server("selectors", r)
 
     # timeout
     mod_timeout_client_server("session_timeout", r)
 
     # initiate map
-    mod_select_map_server("map-setting", r)
-
-    # generate map
-    observeEvent(r$map, {
-        r$geom_slc <- callModule(
-            mapedit::editMod,
-            leafmap = r$map,
-            id = "map-select"
-        )
-    })
+    mod_map_server("map", r)
 
     onSessionEnded(function() {
-        cli::cli_alert_info("Session ended -- cleaning up")
+        cli::cli_alert_info("Session ended - cleaning up")
         # do what needs to be done!
     })
 }
