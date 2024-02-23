@@ -61,7 +61,7 @@ mod_timeout_client_server <- function(id, r) {
                 timer$left <- round(difftime(timer$eventTime, Sys.time(), units = "secs"))
                 if (timer$left < 0) {
                     timer$on <- FALSE
-                    cli::cli_inform("Timeout - Closing user session {session$token}")
+                    cli::cli_alert_info("Timeout - Closing user session {session$token}")
                     removeModal()
                     showModal(modalDialog(
                         title = "Session closed",
@@ -78,7 +78,7 @@ mod_timeout_client_server <- function(id, r) {
         })
 
         observeEvent(input$timeOut, {
-            cli::cli_inform("Timeout - showing modal")
+            cli::cli_alert_info("Timeout - showing modal")
 
             timer$eventTime <- Sys.time() + get_golem_config("timeout_closing_time")
             timer$on <- TRUE
