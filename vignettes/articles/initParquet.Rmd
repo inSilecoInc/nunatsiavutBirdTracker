@@ -44,7 +44,23 @@ nunatsiavut_gulls <- nunatsiavut_gulls |>
   tibble::as_tibble()
 ```
 
-# Write in parquet S3
+# Detect duplicated locations
+
+```{R}
+nunatsiavut_gulls |>
+  janitor::get_dupes(tag_id, datetime)
+```
+
+Remove duplicated locations from original dataset
+
+```{R}
+nunatsiavut_gulls <- nunatsiavut_gulls |>
+  dplyr::group_by(tag_id, datetime) |>
+  dplyr::filter(dplyr::row_number() == 1) |>
+  dplyr::ungroup()
+```
+
+# Write in parquet files
 
 ```{R}
 temp_parquet_gulls <- tempfile()

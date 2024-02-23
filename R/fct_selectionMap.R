@@ -13,11 +13,10 @@
 base_map <- function() {
     leaflet::leaflet(height = 2000) |>
         leafem::addMouseCoordinates() |>
-        leaflet::addTiles() |>
-        leaflet::addProviderTiles("CartoDB.Positron", group = "Map") |>
         leaflet::addProviderTiles("Esri.WorldImagery", group = "Satellite") |>
+        leaflet::addProviderTiles("CartoDB.Positron", group = "Map") |>
         leaflet::addLayersControl(
-            baseGroups = c("Map", "Satellite"),
+            baseGroups = c("Satellite", "Map"),
             position = "bottomleft"
         ) |>
         leaflet::fitBounds(
