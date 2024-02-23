@@ -15,7 +15,7 @@ app_server <- function(input, output, session) {
     mod_dialog_disclaimers_server("show_dialog", r)
 
     # selectors
-    mod_selectors_server("selectors")
+    mod_movebank_server("selectors")
 
     # timeout
     mod_timeout_client_server("session_timeout", r)
