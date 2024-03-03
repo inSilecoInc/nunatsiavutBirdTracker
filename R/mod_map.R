@@ -29,7 +29,19 @@ mod_map_server <- function(id, r) {
             leaflet::leafletProxy("map-map", session) |>
                 leaflet::clearMarkers() |>
                 leaflet::clearShapes() |>
-                leaflet::addPolylines(data = stmp$lines, color = color) |>
+                leaflet.extras2::addArrowhead(
+                    data = stmp$lines,
+                    color = color,
+                    opacity = 0.8,
+                    options = leaflet.extras2::arrowheadOptions(
+                        color = color,
+                        size = "10px",
+                        frequency = "100px",
+                        yawn = 60,
+                        fill = TRUE,
+                        proportionalToTotal = FALSE
+                    )
+                ) |>
                 leaflet::addCircleMarkers(
                     data = stmp$points,
                     label = ~datetime,

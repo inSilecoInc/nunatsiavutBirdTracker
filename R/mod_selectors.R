@@ -9,8 +9,16 @@
 mod_selectors_ui <- function(id) {
     ns <- NS(id)
     tagList(
-        selectInput(ns("vernacular"), label = "Choose the species", choices = NULL),
-        selectInput(ns("tag_id"), label = "Choose your bird", choices = NULL),
+        fluidRow(
+            column(
+                6,
+                selectInput(ns("vernacular"), label = "Choose the species", choices = NULL)
+            ),
+            column(
+                6,
+                selectInput(ns("tag_id"), label = "Choose your bird", choices = NULL)
+            )
+        ),
         uiOutput(ns("slider"))
     )
 }
@@ -21,6 +29,10 @@ mod_selectors_ui <- function(id) {
 mod_selectors_server <- function(id, r) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
+
+        output$slider <- renderUI({
+            sliderInput("slider", "Tracking period", min = as.Date("2023-01-01"), max = as.Date("2024-01-01"), value = as.Date("2024-01-01"), animate = TRUE, sep = ",", dragRange = FALSE, step = 10)
+        })
 
         observeEvent(r$arrow_bucket, {
             cli::cli_alert_info("Selectors - Set dataset")
@@ -51,7 +63,11 @@ mod_selectors_server <- function(id, r) {
         })
 
         observeEvent(input$tag_id, {
-            r$tag_id <- input$tag_id 
+            req(input$tag_id)
+            r$tag_id <- input$tag_id
+            selectInd <- r$selectors |>
+                dplyr::filter(tag_id == input$tag_id)
+            updateSliderInput(session, "slider", min = selectInd$min, max = selectInd$max, value = selectInd$min)
         })
     })
 }
