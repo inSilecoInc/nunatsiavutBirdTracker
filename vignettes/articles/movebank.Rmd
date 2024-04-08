@@ -15,7 +15,7 @@ library(nunatsiavutBirdTracker)
 
 ```{R}
 library("move2")
-movebank_store_credentials("xxxx", "xxxx")
+movebank_store_credentials("snpwong", "pigeon5!")
 movebank_download_study_info(i_am_owner = TRUE)
 studyId <- 2854587542
 
