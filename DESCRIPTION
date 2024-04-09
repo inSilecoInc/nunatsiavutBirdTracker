@@ -26,7 +26,7 @@ Imports:
     osmdata (>= 0.2.5),
     rmarkdown (>= 2.25),
     sf (>= 1.0.14),
-    shiny (>= 1.7.5),
+    shiny (>= 1.7.4),
     shinyjs (>= 2.1)
 Suggests: 
     janitor (>= 2.2.0),
@@ -39,4 +39,4 @@ RoxygenNote: 7.3.1
 Config/testthat/edition: 3
 License: MIT + file LICENSE
 Depends: 
-    R (>= 2.10)
+    R (>= 4.1)

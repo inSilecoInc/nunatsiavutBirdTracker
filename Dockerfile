@@ -9,6 +9,9 @@ RUN apt-get update \
     libgeos-dev \ 
     libsqlite0-dev 
 
+# Install .deb de sops
+# via apt
+
 RUN install2.r remotes
 RUN Rscript -e 'remotes::install_version("bslib", upgrade = "never", version = "0.5.1", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("config", upgrade = "never", version = "0.3.2", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
