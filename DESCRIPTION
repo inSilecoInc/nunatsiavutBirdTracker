@@ -8,25 +8,30 @@ Authors@R:
            email = "info@insileco.io")
 Description: Application to explore Gulls and Ptarmigan movements in Nunatsiavut
 Imports: 
+    arrow (>= 14.0.0.2),
     bslib (>= 0.5.1),
     cli (>= 3.6.1),
     config (>= 0.3.2),
+    dplyr(>= 1.1.4),
     DT (>= 0.31),
     fs (>= 1.6.3),
     glue (>= 1.6.2),
     golem (>= 0.4.1),
     leafem (>= 0.2.3),
     leaflet (>= 2.2.1),
+    leaflet.extras2 (>= 1.2.2),
+    lorem (>= 1.0.0),
     mapedit (>= 0.6.0),
     markdown (>= 1.12),
     osmdata (>= 0.2.5),
     rmarkdown (>= 2.25),
     sf (>= 1.0.14),
-    shiny (>= 1.7.5),
-    shinyjs (>= 2.1),
-    lorem (>= 1.0.0)
+    shiny (>= 1.7.4),
+    shinyjs (>= 2.1)
 Suggests: 
+    janitor (>= 2.2.0),
     testthat (>= 3.0.0),
+    tibble (>= 3.2.1),
     utils
 Encoding: UTF-8
 LazyData: true
@@ -34,4 +39,4 @@ RoxygenNote: 7.3.1
 Config/testthat/edition: 3
 License: MIT + file LICENSE
 Depends: 
-    R (>= 2.10)
+    R (>= 4.1)

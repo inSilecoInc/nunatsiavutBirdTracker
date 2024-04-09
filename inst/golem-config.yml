@@ -1,11 +1,13 @@
 default:
   golem_name: nunatsiavutBirdTracker
   golem_version: 0.0.0.9000
+  gcs_bucket: bird-locations
   app_prod: no
 production:
   app_prod: yes
   timeout_session_time: 300
   timeout_closing_time: 30
+  gcs_creds: !expr Sys.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 dev:
   golem_wd: !expr golem::pkg_path()
   timeout_session_time: 60
