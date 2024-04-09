@@ -9,6 +9,9 @@ RUN apt-get update \
     libgeos-dev \ 
     libsqlite0-dev 
 
+# Install .deb de sops
+# via apt
+
 RUN install2.r remotes
 RUN Rscript -e 'remotes::install_version("bslib", upgrade = "never", version = "0.5.1", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("config", upgrade = "never", version = "0.3.2", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
@@ -34,6 +37,10 @@ COPY . /srv/shiny-server/
 
 # Copy configuration files into the Docker image
 COPY shiny-server.conf  /etc/shiny-server/shiny-server.conf
+
+# Set Google service account credentials
+COPY nunatsiavut-birds-f33436183827.json /srv/shiny-server/nunatsiavut-birds-f33436183827.json
+ENV GOOGLE_APPLICATION_CREDENTIALS=/srv/shiny-server/nunatsiavut-birds-f33436183827.json
 
 # Expose the application port
 EXPOSE 5000

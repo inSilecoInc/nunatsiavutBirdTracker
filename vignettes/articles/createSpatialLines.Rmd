@@ -1,0 +1,67 @@
+---
+title: "Initialize S3 bucket with data locations"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{R}
+Sys.setenv(GOOGLE_APPLICATION_CREDENTIALS = "./nunatsiavut-birds-f33436183827.json")
+arrow_dataset <- arrow::gs_bucket("bird-locations") |>
+  arrow::open_dataset()
+
+summarySpatial <- arrow_dataset |>
+  dplyr::group_by(tag_id, vernacular, species) |>
+  dplyr::summarize(min = min(datetime), max = max(datetime)) |>
+  dplyr::collect()
+```
+
+```{R}
+data <- arrow_dataset |>
+  # Bug: https://issues.apache.org/jira/browse/ARROW-10305
+  dplyr::collect() |>
+  dplyr::filter(tag_id == 197204) |>
+  dplyr::select(-species, -vernacular, -band_id)
+
+points <- data |>
+  dplyr::arrange(desc(datetime)) |>
+  dplyr::rename(lon1 = "lon", lat1 = "lat") |>
+  dplyr::mutate(
+    lon2 = c(NA, lon1[-length(lon1)]),
+    lat2 = c(NA, lat1[-length(lat1)])
+  ) |>
+  dplyr::filter(!is.na(lon2), !is.na(lat2)) |>
+  dplyr::mutate(
+    line_id = dplyr::row_number()
+  )
+
+lines <- points |>
+  dplyr::select(lon = lon1, lat = lat1, tag_id, line_id, datetime) |>
+  rbind(dplyr::select(points, lon = lon2, lat = lat2, tag_id, line_id, datetime)) |>
+  sf::st_as_sf(coords = c("lon", "lat"), crs = 4326) |>
+  dplyr::group_by(line_id, datetime) |>
+  dplyr::summarise(do_union = FALSE) |>
+  sf::st_cast("LINESTRING")
+
+leaflet::leaflet(height = 2000) |>
+  leaflet::addProviderTiles("Esri.WorldImagery", group = "Satellite") |>
+  leaflet::addProviderTiles("CartoDB.DarkMatter", group = "Map") |>
+  leaflet::addLayersControl(
+    baseGroups = c("Satellite", "Map"),
+    position = "bottomleft"
+  ) |>
+  leaflet.extras2::addArrowhead(
+    data = lines,
+    options = leaflet.extras2::arrowheadOptions(
+      size = "20px",
+      frequency = "100px",
+      yawn = 60,
+      fill = TRUE,
+      proportionalToTotal = FALSE
+    )
+  )
+```

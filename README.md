@@ -16,7 +16,7 @@ source("dev/run_dev.R")
 ### Build and run the docker image 
 
 ```sh
-docker build -t nunatsiavutBirdTracker . ; docker run -it --rm --network host nunatsiavutBirdTracker
+docker build -t nunatsiavut-bird-tracker . ; docker run -it --rm --network host nunatsiavut-bird-tracker
 ```
 
 ### Contributing

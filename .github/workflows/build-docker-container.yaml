@@ -6,11 +6,10 @@ on:
   pull_request:
     branches: main
 
-name: build-and-release
+name: Build docker image
 
 jobs:
   push_to_registry:
-
     name: Build docker image
     runs-on: ubuntu-latest
     env:
