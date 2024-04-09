@@ -9,9 +9,11 @@ RUN apt-get update \
     libgeos-dev \ 
     libsqlite0-dev 
 
-# Install .deb de sops
-# via apt
+# install sops
+RUN wget https://github.com/getsops/sops/releases/download/v3.8.1/sops_3.8.1_amd64.deb
+RUN dpkg -i sops_3.8.1_amd64.deb && rm sops_3.8.1_amd64.deb
 
+# install R dependancies
 RUN install2.r remotes
 RUN Rscript -e 'remotes::install_version("bslib", upgrade = "never", version = "0.5.1", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("config", upgrade = "never", version = "0.3.2", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
