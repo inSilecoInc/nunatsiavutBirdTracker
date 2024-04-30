@@ -35,6 +35,7 @@ WORKDIR /usr
 RUN rm -rf /build_zone
 
 # Copy shiny app into the Docker image
+RUN rm -rf /srv/shiny-server/*
 COPY . /srv/shiny-server/
 
 # Copy configuration files into the Docker image
@@ -48,5 +49,3 @@ ENV GOOGLE_APPLICATION_CREDENTIALS=/srv/shiny-server/nunatsiavut-birds-f33436183
 EXPOSE 5000
 
 USER shiny
-
-ENTRYPOINT ["/usr/bin/shiny-server"]

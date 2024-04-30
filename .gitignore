@@ -53,3 +53,6 @@ inst/app/www/static_docs/*.html
 
 # vscode 
 .vscode
+
+# Credentials
+./nunatsiavut-birds-f33436183827.json
