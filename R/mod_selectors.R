@@ -11,12 +11,16 @@ mod_selectors_ui <- function(id) {
     tagList(
         fluidRow(
             column(
-                6,
+                12,
                 selectInput(ns("vernacular"), label = "Choose the species", choices = NULL)
             ),
             column(
-                6,
+                12,
                 selectInput(ns("tag_id"), label = "Choose your bird", choices = NULL)
+            ),
+            column(
+                12,
+                selectInput(ns("years"), label = "Year", choices = NULL)
             )
         ),
         uiOutput(ns("slider"))
@@ -68,6 +72,7 @@ mod_selectors_server <- function(id, r) {
             selectInd <- r$selectors |>
                 dplyr::filter(tag_id == input$tag_id)
             updateSliderInput(session, "slider", min = selectInd$min, max = selectInd$max, value = selectInd$min)
+            updateSelectInput(session, "years", choices = unlist(selectInd$years))
         })
     })
 }

@@ -20,12 +20,14 @@ base_map <- function() {
         )
 }
 
-fetch_spatial_ind <- function(ds = NULL, ind = NULL) {
+fetch_spatial_ind <- function(ds = NULL, ind = NULL, year = NULL) {
     data <- ds |>
         # Bug: https://issues.apache.org/jira/browse/ARROW-10305
         dplyr::collect() |>
-        dplyr::filter(tag_id == ind) |>
+        dplyr::filter(tag_id == ind & format(datetime,"%Y") == year) |>
         dplyr::select(-species, -vernacular, -band_id) 
+
+    
 
     points <- data |>
         dplyr::arrange(desc(datetime)) |>
