@@ -16,3 +16,5 @@ $run_dev.*
 ^\.vscode$
 ^vignettes/articles$
 ^nunatsiavut-birds-f33436183827\.json$
+^app\.R$
+^rsconnect$

@@ -20,10 +20,13 @@ mod_map_server <- function(id, r) {
 
         output$map <- leaflet::renderLeaflet(base_map())
 
-        observeEvent(r$tag_id, {
-            req(r$tag_id)
-            cli::cli_alert_info("Map - Fetch spatial informations for {r$tag_id}")
-            stmp <- fetch_spatial_ind(ds = r$arrow_dataset, ind = r$tag_id)
+        observeEvent({
+                r$tag_id 
+                r$year 
+            }, {
+            req(r$tag_id, r$year)
+            cli::cli_alert_info("Map - Fetch spatial informations for {r$tag_id} and year {r$year}")
+            stmp <- fetch_spatial_ind(ds = r$arrow_dataset, ind = r$tag_id, year = r$year)
             bbox <- sf::st_bbox(stmp$lines) |> as.vector()
             color <- "#FFCC00" 
             leaflet::leafletProxy("map-map", session) |>
