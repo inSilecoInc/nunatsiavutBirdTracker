@@ -1,5 +1,5 @@
 ---
-title: "movebank"
+title: "Extract project data from movebank"
 ---
 
 ```{r, include = FALSE}

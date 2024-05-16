@@ -24,6 +24,9 @@ app_server <- function(input, output, session) {
     # initiate map
     mod_map_server("map", r)
 
+    # initiate bird description module
+    mod_bird_description_server("bird_description_1", r)
+
     onSessionEnded(function() {
         cli::cli_alert_info("Session ended - cleaning up")
         # do what needs to be done!
