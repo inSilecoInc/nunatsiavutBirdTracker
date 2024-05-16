@@ -73,7 +73,7 @@ mod_selectors_server <- function(id, r) {
             selectInd <- r$selectors |>
                 dplyr::filter(tag_id == input$tag_id)
             updateSliderInput(session, "slider", min = selectInd$min, max = selectInd$max, value = selectInd$min)
-            updateSelectInput(session, "year", choices = unlist(selectInd$years))
+            updateSelectInput(session, "year", choices = unlist(selectInd$years) |> sort(decreasing = TRUE))
         })
 
         observeEvent(input$year, {
