@@ -8,12 +8,12 @@ Procedure to extract bird metadata from the googlesheet and upload it as a json 
 birds_md <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1XiksWymZ8Mam9moxwTxwkK5UzuQ5KDzZRahdr72V-oM/edit?usp=sharing") |>
     janitor::clean_names()
 
-tmp_json_md <- tempfile(fileext = ".json")
-jsonlite::write_json(birds_md, tmp_json_md)
+tmp_rds <- tempfile(fileext = ".rds")
+saveRDS(birds_md, tmp_rds)
 
 googleCloudStorageR::gcs_auth("./nunatsiavut-birds-f33436183827.json")
 bucket <- "bird-metadata"
 
-googleCloudStorageR::gcs_upload(tmp_json_md, name = "birds-metadata.json", bucket = bucket, predefinedAcl = "bucketLevel")
+googleCloudStorageR::gcs_upload(tmp_rds, name = "bird-metadata.rds", bucket = bucket, predefinedAcl = "bucketLevel")
 ```
 
