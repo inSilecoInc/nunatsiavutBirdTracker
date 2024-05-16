@@ -13,7 +13,6 @@ fct_start <- function() {
 
     map_bbox <<- list(lng1 = -65.6, lat1 = 45.5, lng2 = -61.6, lat2 = 51.5)
 
-
     onStop(clean_up_app)
 }
 
