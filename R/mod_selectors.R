@@ -20,7 +20,7 @@ mod_selectors_ui <- function(id) {
             ),
             column(
                 12,
-                selectInput(ns("years"), label = "Year", choices = NULL)
+                selectInput(ns("year"), label = "Year", choices = NULL)
             )
         ),
         uiOutput(ns("slider"))
@@ -49,17 +49,17 @@ mod_selectors_server <- function(id, r) {
         })
 
         observeEvent(r$selectors, {
-            cli::cli_alert_info("Selectors - Set vernacular choices")
             req(r$selectors)
+            cli::cli_alert_info("Selectors - Set vernacular choices")
             vernacular_choices <- r$selectors |>
                 dplyr::pull(vernacular) |>
                 unique()
             updateSelectInput(session, "vernacular", choices = vernacular_choices)
         })
     
-        observeEvent(list(r$selectors, input$vernacular), {
+        observeEvent(input$vernacular, {
+            req(input$vernacular)
             cli::cli_alert_info("Selectors - Set tag ids based on select vernacular name")
-            req(r$selectors, input$vernacular)
             tag_ids <- r$selectors |>
                 dplyr::filter(vernacular == input$vernacular) |>
                 dplyr::pull(tag_id)
@@ -68,11 +68,18 @@ mod_selectors_server <- function(id, r) {
 
         observeEvent(input$tag_id, {
             req(input$tag_id)
+            cli::cli_alert_info("Selectors - Set tag ids based on select vernacular name")
             r$tag_id <- input$tag_id
             selectInd <- r$selectors |>
                 dplyr::filter(tag_id == input$tag_id)
             updateSliderInput(session, "slider", min = selectInd$min, max = selectInd$max, value = selectInd$min)
-            updateSelectInput(session, "years", choices = unlist(selectInd$years))
+            updateSelectInput(session, "year", choices = unlist(selectInd$years))
+        })
+
+        observeEvent(input$year, {
+            cli::cli_alert_info("Selectors - Set selected year")
+            req(input$year)
+            r$year <- input$year
         })
     })
 }
