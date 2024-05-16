@@ -21,6 +21,7 @@ data(nunatsiavut_gulls)
 nunatsiavut_gulls <- nunatsiavut_gulls |>
   janitor::remove_empty(c("rows", "cols")) |>
   janitor::remove_constant() |>
+  dplyr::filter(sensor.type == "gps") |>
   dplyr::select(
     tag_id = tag.local.identifier,
     band_id = individual.local.identifier,
