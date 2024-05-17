@@ -7,9 +7,7 @@ app_server <- function(input, output, session) {
 
     r <- reactiveValues(
         disclaimer_agreed = FALSE,
-        arrow_bucket = arrow::gs_bucket("bird-locations"),
-        arrow_dataset = NULL,
-        selectors = NULL
+        arrow_bucket = arrow::gs_bucket("bird-locations")
     )
 
     # disclaimer
@@ -25,7 +23,7 @@ app_server <- function(input, output, session) {
     mod_map_server("map", r)
 
     # initiate bird description module
-    mod_bird_description_server("bird_description_1", r)
+    mod_bird_description_server("bird_description", r)
 
     onSessionEnded(function() {
         cli::cli_alert_info("Session ended - cleaning up")
