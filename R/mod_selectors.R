@@ -12,18 +12,32 @@ mod_selectors_ui <- function(id) {
         fluidRow(
             column(
                 12,
-                selectInput(ns("vernacular"), label = "Choose the species", choices = NULL)
+                h5("Select a specific bird")
             ),
             column(
                 12,
-                selectInput(ns("tag_id"), label = "Choose your bird", choices = NULL)
+                selectInput(ns("vernacular"), label = "Choose the species:", choices = NULL)
             ),
             column(
                 12,
-                selectInput(ns("year"), label = "Year", choices = NULL)
+                selectInput(ns("tag_id"), label = "Choose your bird:", choices = NULL)
+            ),
+            column(
+                12,
+                selectInput(ns("year"), label = "Select the year:", choices = NULL)
+            ),
+            column(
+                12,
+                hr(),
+                h5("Track his movement"),
+                uiOutput(ns("slider")),
+                hr()
             )
         ),
-        uiOutput(ns("slider"))
+        div(class = "btn-group", role = "group",
+            actionButton("previous", label = "Previous bird", class="btn btn-primary p-1 my-1 mr-1"),
+            actionButton("next", label = "Next bird", class="btn btn-primary p-1 my-1 ml-1")
+        )
     )
 }
 
@@ -35,7 +49,10 @@ mod_selectors_server <- function(id, r) {
         ns <- session$ns
 
         output$slider <- renderUI({
-            sliderInput("slider", "Tracking period", min = as.Date("2023-01-01"), max = as.Date("2024-01-01"), value = as.Date("2024-01-01"), animate = TRUE, sep = ",", dragRange = FALSE, step = 10)
+            tags$div(
+                class = "m-2",
+                sliderInput("slider", "", min = as.Date("2023-01-01"), max = as.Date("2024-01-01"), value = as.Date("2024-01-01"), animate = TRUE, sep = ",", dragRange = FALSE, step = 10)
+            )
         })
 
         observeEvent(r$arrow_bucket, {
