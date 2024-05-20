@@ -31,6 +31,7 @@ app_ui <- function(request) {
             ),
             mod_bird_description_ui("bird_description"),
             width = NULL,
+            class = "p-0",
             style = htmltools::css(grid_template_columns = "1.25fr 0.75fr")
         )
     )
