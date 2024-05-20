@@ -20,6 +20,21 @@ mod_map_server <- function(id, r) {
 
         output$map <- leaflet::renderLeaflet(base_map())
 
+        observeEvent(r$selectedBirdDescription, {
+            req(r$selectedBirdDescription)
+
+            leaflet::leafletProxy("map-map", session) |>
+                leaflet:: addCircleMarkers(
+                    lng = r$selectedBirdDescription$longitude,
+                    lat = r$selectedBirdDescription$latitude,
+                    color = "#BF2C34",
+                    fill = TRUE,
+                    radius = 3,
+                    fillOpacity = 1
+                )
+
+        })
+
         observeEvent({
                 r$tag_id 
                 r$year 
@@ -28,16 +43,16 @@ mod_map_server <- function(id, r) {
             cli::cli_alert_info("Map - Fetch spatial informations for {r$tag_id} and year {r$year}")
             stmp <- fetch_spatial_ind(ds = r$arrow_dataset, ind = r$tag_id, year = r$year)
             bbox <- sf::st_bbox(stmp$lines) |> as.vector()
-            color <- "#FFCC00" 
+            color_line <- "#FFCC00" 
             leaflet::leafletProxy("map-map", session) |>
                 leaflet::clearMarkers() |>
                 leaflet::clearShapes() |>
                 leaflet.extras2::addArrowhead(
                     data = stmp$lines,
-                    color = color,
+                    color = color_line,
                     opacity = 0.8,
                     options = leaflet.extras2::arrowheadOptions(
-                        color = color,
+                        color = color_line,
                         size = "10px",
                         frequency = "100px",
                         yawn = 60,
@@ -48,7 +63,7 @@ mod_map_server <- function(id, r) {
                 leaflet::addCircleMarkers(
                     data = stmp$points,
                     label = ~datetime,
-                    color = color,
+                    color = color_line,
                     radius = 3,
                     stroke = FALSE,
                     fillOpacity = 1
