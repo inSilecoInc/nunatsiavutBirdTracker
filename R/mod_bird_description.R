@@ -28,7 +28,6 @@ mod_bird_description_server <- function(id, r){
     observeEvent(r$tag_id, {
       req(r$tag_id, birds_metadata)
       selDesc <- dplyr::filter(birds_metadata, tag_id == r$tag_id)
-      print(names(selDesc))
       r$selectedBirdDescription <- selDesc
       output$description <- renderUI({
         bslib::card(
@@ -36,9 +35,9 @@ mod_bird_description_server <- function(id, r){
               h4(
                 ifelse(is.na(selDesc$name), "Unnamed bird", stringr::str_to_title(selDesc$name)),
                 br(),
-                span(class="text-muted", style="font-size: .7em;", "Glaucus Gull"),
+                span(class="text-muted", style="font-size: .7em;", selDesc$vernacular_en),
                 br(),
-                span(class="fst-italic", style="font-size: .7em;", "Larus glaucoides"),
+                span(class="fst-italic", style="font-size: .7em;", selDesc$species),
                 br(),
                 span(class="badge rounded-pill bg-primary fw-lighter", paste("#Tag ID - ", selDesc$tag_id),  style="font-size: .5em;")
               ),
