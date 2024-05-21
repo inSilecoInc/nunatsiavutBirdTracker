@@ -24,10 +24,6 @@ mod_selectors_ui <- function(id) {
             ),
             column(
                 12,
-                selectInput(ns("year"), label = "Select the year:", choices = NULL)
-            ),
-            column(
-                12,
                 hr(),
                 h5("Track his movement"),
                 uiOutput(ns("slider")),
