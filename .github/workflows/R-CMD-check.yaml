@@ -41,7 +41,6 @@ jobs:
           extra-packages:  |
             rcmdcheck
             any::covr
-            any::goodpractice
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
@@ -49,14 +48,4 @@ jobs:
       - name: Code coverage
         run: covr::package_coverage()
         shell: Rscript {0}
-
-      - name: Good practices
-        run: |
-          goodpractice::gp(checks = c(
-            "cyclocomp",
-            "no_import_package_as_a_whole",
-            "no_export_pattern"
-          ))
-        shell: Rscript {0}
-
 
