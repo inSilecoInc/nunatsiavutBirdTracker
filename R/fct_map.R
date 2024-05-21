@@ -23,8 +23,12 @@ base_map <- function() {
 fetch_spatial_ind <- function(ds = NULL, ind = NULL, year = NULL) {
     data <- ds |>
         dplyr::collect() |>
-        dplyr::filter(tag_id == ind & format(datetime, format = "%Y") == year) |>
-        dplyr::select(-species, -vernacular, -band_id) 
+        dplyr::filter(tag_id == ind) |>
+        dplyr::select(-species, -vernacular, -band_id)
+    
+    if (!is.null(year)) {
+        data <- dplyr::filter(data, format(datetime, format = "%Y") == year) 
+    }
 
     points <- data |>
         dplyr::arrange(desc(datetime)) |>
