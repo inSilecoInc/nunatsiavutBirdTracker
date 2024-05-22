@@ -15,13 +15,16 @@ RUN dpkg -i sops_3.8.1_amd64.deb && rm sops_3.8.1_amd64.deb
 
 # install R dependancies
 RUN install2.r remotes
+RUN Rscript -e 'remotes::install_version("arrow", upgrade = "never", version = "14.0.0.2", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("bslib", upgrade = "never", version = "0.5.1", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("config", upgrade = "never", version = "0.3.2", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("DT", upgrade = "never", version = "0.31", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
+RUN Rscript -e 'remotes::install_version("fs", upgrade = "never", version = "1.6.3", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("golem", upgrade = "never", version = "0.4.1", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("mapedit", upgrade = "never", version = "0.6.0", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("markdown", upgrade = "never", version = "1.12", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("osmdata", upgrade = "never", version = "0.2.5", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
+RUN Rscript -e 'remotes::install_version("pkgload", upgrade = "never", version = "1.3.3", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("rmarkdown", upgrade = "never", version = "2.25", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 RUN Rscript -e 'remotes::install_version("shinyjs", upgrade = "never", version = "2.1", repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")'
 
