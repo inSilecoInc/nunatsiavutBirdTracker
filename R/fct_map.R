@@ -31,9 +31,9 @@ fetch_spatial_ind <- function(ds = NULL, ind = NULL, year = NULL) {
     }
 
     points <- data |>
-        dplyr::arrange(desc(datetime)) |>
+        dplyr::arrange(datetime) |>
         sf::st_as_sf(coords = c("lon", "lat"), crs = 4326)
-    
+
     lines <- points |> sf::st_union() |> sf::st_cast("LINESTRING")
 
     return(list(
