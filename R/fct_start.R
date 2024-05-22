@@ -12,7 +12,15 @@ fct_start <- function() {
     markdown::mark(disc_path_md)
 
     map_bbox <<- list(lng1 = -65.6, lat1 = 45.5, lng2 = -61.6, lat2 = 51.5)
-
+    
+    # Load birds metadata
+    cli::cli_alert_info("Application startup - Set birds metadata")
+    googleCloudStorageR::gcs_auth(Sys.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
+    birds_metadata <<- googleCloudStorageR::gcs_get_object("bird-metadata.rds",
+        bucket = "bird-metadata",
+        parseFunction = googleCloudStorageR::gcs_parse_rds
+    )
+    
     onStop(clean_up_app)
 }
 
