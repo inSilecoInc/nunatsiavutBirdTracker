@@ -26,7 +26,25 @@ mod_selectors_ui <- function(id) {
                 12,
                 hr(),
                 h5("Track his movement"),
-                uiOutput(ns("slider")),
+                # numericInput(
+                #     ns("res_time"), 
+                #     "Time resolution (in number of days)", 
+                #     value = 1, min = 1, max = 30, step = 1
+                #     ),
+                div(
+                    class = "m-2",
+                    sliderInput(
+                        ns("slider_date"), 
+                        "", 
+                        min = as.Date("2023-01-01"),
+                        max = as.Date("2024-01-01"), 
+                        value = as.Date("2024-01-01"), 
+                        animate = animationOptions(interval = 2000), 
+                        sep = ",", 
+                        dragRange = FALSE, 
+                        step = 1
+                    )
+                ),
                 hr()
             )
         ),
@@ -43,13 +61,6 @@ mod_selectors_ui <- function(id) {
 mod_selectors_server <- function(id, r) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
-
-        output$slider <- renderUI({
-            tags$div(
-                class = "m-2",
-                sliderInput("slider", "", min = as.Date("2023-01-01"), max = as.Date("2024-01-01"), value = as.Date("2024-01-01"), animate = TRUE, sep = ",", dragRange = FALSE, step = 10)
-            )
-        })
 
         observeEvent(r$arrow_bucket, {
             cli::cli_alert_info("Selectors - Set dataset")
@@ -85,7 +96,13 @@ mod_selectors_server <- function(id, r) {
             r$tag_id <- input$tag_id
             selectInd <- r$selectors |>
                 dplyr::filter(tag_id == input$tag_id)
-            updateSliderInput(session, "slider", min = selectInd$min, max = selectInd$max, value = selectInd$min)
+            updateSliderInput(
+                session, 
+                "slider_date", 
+                min = selectInd$min, 
+                max = selectInd$max, 
+                value = selectInd$max
+            )
             updateSelectInput(session, "year", choices = unlist(selectInd$years) |> sort(decreasing = TRUE))
         })
 
@@ -94,5 +111,10 @@ mod_selectors_server <- function(id, r) {
             req(input$year)
             r$year <- input$year
         })
+
+        observe({
+            r$max_date <- input$slider_date
+        })
+
     })
 }

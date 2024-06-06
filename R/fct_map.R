@@ -20,7 +20,8 @@ base_map <- function() {
         )
 }
 
-fetch_spatial_ind <- function(ds = NULL, ind = NULL, year = NULL) {
+fetch_spatial_ind <- function(ds = NULL, ind = NULL, year = NULL, 
+    max_date = NULL) {
     data <- ds |>
         dplyr::collect() |>
         dplyr::filter(tag_id == ind) |>
@@ -28,6 +29,10 @@ fetch_spatial_ind <- function(ds = NULL, ind = NULL, year = NULL) {
 
     if (!is.null(year)) {
         data <- dplyr::filter(data, format(datetime, format = "%Y") == year)
+    }
+    if (!is.null(max_date)) {
+        data <- data |> 
+            dplyr::filter(datetime <= max_date)
     }
 
     traj_points <- data |>
