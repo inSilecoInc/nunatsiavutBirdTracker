@@ -1,6 +1,6 @@
 Package: nunatsiavutBirdTracker
 Title: Birds tracker
-Version: 0.2.0
+Version: 0.2.0.9000
 Authors@R: 
     person(given = "Team",
            family = "inSileco",
