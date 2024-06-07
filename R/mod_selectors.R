@@ -94,6 +94,7 @@ mod_selectors_server <- function(id, r) {
         })
 
         observeEvent(input$next_bird, {
+            cli::cli_alert_info("Selectors - Get next bird")
             id <- which(input$tag_id == r$tag_ids)
             next_id <- ifelse(id < length(r$tag_ids), id + 1, 1)
             slc_indiv <- r$tag_ids[next_id]
@@ -105,6 +106,7 @@ mod_selectors_server <- function(id, r) {
         })
 
         observeEvent(input$prev_bird, {
+            cli::cli_alert_info("Selectors - Get previous bird")
             id <- which(input$tag_id == r$tag_ids)
             prev_id <- ifelse(id > 1, id - 1, length(r$tag_ids))
             slc_indiv <- r$tag_ids[prev_id]
