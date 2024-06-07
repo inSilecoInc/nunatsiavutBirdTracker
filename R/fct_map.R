@@ -20,24 +20,33 @@ base_map <- function() {
         )
 }
 
-fetch_spatial_ind <- function(ds = NULL, ind = NULL, year = NULL) {
+fetch_spatial_ind <- function(ds = NULL, ind = NULL, year = NULL, 
+    max_date = NULL) {
     data <- ds |>
         dplyr::collect() |>
         dplyr::filter(tag_id == ind) |>
         dplyr::select(-species, -vernacular, -band_id)
-    
+
     if (!is.null(year)) {
-        data <- dplyr::filter(data, format(datetime, format = "%Y") == year) 
+        data <- dplyr::filter(data, format(datetime, format = "%Y") == year)
+    }
+    if (!is.null(max_date)) {
+        data <- data |> 
+            dplyr::filter(datetime <= max_date)
     }
 
-    points <- data |>
+    traj_points <- data |>
         dplyr::arrange(datetime) |>
         sf::st_as_sf(coords = c("lon", "lat"), crs = 4326)
 
-    lines <- points |> sf::st_union() |> sf::st_cast("LINESTRING")
+    # see https://github.com/r-spatial/sf/issues/692
+    traj_line <- traj_points |>
+        dplyr::group_by(tag_id) |>
+        dplyr::summarize(do_union = FALSE) |>
+        sf::st_cast("LINESTRING")
 
     return(list(
-        points = points,
-        lines = lines
+        points = traj_points,
+        lines = traj_line
     ))
 }

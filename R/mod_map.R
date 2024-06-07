@@ -42,12 +42,15 @@ mod_map_server <- function(id, r) {
 
         })
 
-        observeEvent(r$tag_id, {
+        observe({
             req(r$tag_id)
             cli::cli_alert_info("Map - Fetch spatial informations for {r$tag_id}")
             
-            stmp <- fetch_spatial_ind(ds = r$arrow_dataset, ind = r$tag_id)
-            bbox <- sf::st_bbox(stmp$lines) |> as.vector()
+            stmp <- fetch_spatial_ind(
+                ds = r$arrow_dataset, ind = r$tag_id, max_date = r$max_date
+            )
+            bbox <- sf::st_bbox(stmp$lines) |> 
+                as.vector()
             color_line <- "#FFCC00"
             
             leaflet::leafletProxy("map-map", session) |>
