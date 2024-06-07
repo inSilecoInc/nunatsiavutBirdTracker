@@ -10,7 +10,9 @@ fct_start <- function() {
     cli::cli_alert_info("Application startup - convert md documents")
     disc_path_md <<- app_sys("app", "www", "static_docs", "disclaimer.md")
     disc_frontm <<- rmarkdown::yaml_front_matter(disc_path_md)
-    markdown::mark(disc_path_md)  |>
+    disc_path_md |> 
+        readLines() |> 
+        markdown::mark() |>
         writeLines(disc_path_md |> fs::path_ext_set("html"))
 
     map_bbox <<- list(lng1 = -65.6, lat1 = 45.5, lng2 = -61.6, lat2 = 51.5)
