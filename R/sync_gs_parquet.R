@@ -6,6 +6,7 @@
 #' @param auth_gcs_file_path movebank password.
 #' @param ... arguments passed to get_mb_tracks function 
 #'
+#' @export 
 sync_gs_parquet <- function(bucket=NULL, auth_gcs_file_path="./nunatsiavut-birds-f33436183827.json", ...){
 
   temp_parquet_gulls <- tempfile()

@@ -15,6 +15,7 @@
 #' - species: Species latin name
 #' - vernacular: Species english name
 #'
+#' @export 
 
 get_mb_tracks <- function(mb_user=NULL, mb_password=NULL, study_id=2854587542){
 
