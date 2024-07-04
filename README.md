@@ -3,7 +3,6 @@
 [![R CMD Check](https://github.com/inSilecoInc/nunatsiavutBirdTracker/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/inSilecoInc/nunatsiavutBirdTracker/actions/workflows/R-CMD-check.yaml)
 
 Application to explore Gulls and Ptarmigan movements. 
-**Delivery date:** March 31th 2024
 
 ### Run the shiny application
 
