@@ -42,7 +42,8 @@ mod_selectors_ui <- function(id) {
                         animate = animationOptions(interval = 2000),
                         sep = ",",
                         dragRange = FALSE,
-                        step = 1
+                        step = 1,
+                        timeFormat = "%F" 
                     )
                 ),
                 hr()
@@ -127,7 +128,8 @@ mod_selectors_server <- function(id, r) {
                 "slider_date",
                 min = selectInd$min,
                 max = selectInd$max,
-                value = selectInd$max
+                value = selectInd$max,
+                timeFormat = "%F" 
             )
         })
 
