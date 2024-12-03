@@ -17,7 +17,7 @@
 #'
 #' @export 
 
-get_mb_tracks <- function(mb_user=NULL, mb_password=NULL, study_id=2854587542){
+get_mb_tracks <- function(mb_user = Sys.getenv("MB_USER"), mb_password = Sys.getenv("MB_PASSWORD"), study_id = NULL){
 
     suppressWarnings({
         suppressMessages({
@@ -25,36 +25,42 @@ get_mb_tracks <- function(mb_user=NULL, mb_password=NULL, study_id=2854587542){
 
             tracks <- move::getMovebankData(study = study_id, login = loginStored, removeDuplicatedTimestamps = TRUE, deploymentAsIndividuals = TRUE)@data
 
-            animals <- move::getMovebankAnimals(study = study_id, login = loginStored) |>
-                dplyr::select(tag_id, local_identifier, tag_local_identifier, sensor_type_id, taxon_canonical_name)
-
-            tracks_df <- tracks |>
-                dplyr::left_join(animals)
+            animals <- move::getMovebankAnimals(study = study_id, login = loginStored) 
         })
     })
 
-    tracks_df <- tracks_df |>
-        janitor::remove_empty(c("rows", "cols")) |>
-        janitor::remove_constant() |>
-        dplyr::filter(sensor_type == "GPS") |>
+    tracks_df <- tracks |>
+        dplyr::left_join(animals) |>
         dplyr::select(
             tag_id = tag_local_identifier,
             band_id = local_identifier,
             lon = location_long,
             lat = location_lat,
             datetime = timestamp,
-            species = taxon_canonical_name
+            species = taxon_canonical_name,
+            sensor_type,
+            argos_lc
         ) |>
+        janitor::remove_empty(c("rows", "cols")) |>
         dplyr::mutate(
             vernacular = dplyr::case_when(
                 species == "Larus marinus" ~ "Great Black-backed Gull",
                 species == "Larus hyperboreus" ~ "Glaucous Gull",
                 species == "Larus argentatus" ~ "Herring Gull",
+                species == "Somateria mollissima" ~ "Common eider",
                 TRUE ~ "Undefined"
             ),
             tag_id = as.factor(tag_id),
             datetime = as.POSIXct(datetime)
         )
+
+
+    # Studies cleanup
+    if(study_id == 2854587542) {
+        tracks_df <- dplyr::filter(tracks_df, sensor_type == "GPS")
+    } else if(study_id == 4036904918) {
+        tracks_df <- dplyr::filter(tracks_df, sensor_type == "Argos Doppler Shift")
+    }
     
     return(tracks_df)
 }
