@@ -42,7 +42,8 @@ mod_selectors_ui <- function(id) {
                         animate = animationOptions(interval = 2000),
                         sep = ",",
                         dragRange = FALSE,
-                        step = 1
+                        step = 1,
+                        timeFormat = "%Y-%m-%d" 
                     )
                 ),
                 hr()
