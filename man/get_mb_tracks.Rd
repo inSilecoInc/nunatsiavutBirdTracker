@@ -4,7 +4,11 @@
 \alias{get_mb_tracks}
 \title{Retrieve movebank tracks}
 \usage{
-get_mb_tracks(mb_user = NULL, mb_password = NULL, study_id = 2854587542)
+get_mb_tracks(
+  mb_user = Sys.getenv("MB_USER"),
+  mb_password = Sys.getenv("MB_PASSWORD"),
+  study_id = NULL
+)
 }
 \arguments{
 \item{mb_user}{movebank username.}

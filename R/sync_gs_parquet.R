@@ -9,11 +9,11 @@
 #' @export 
 sync_gs_parquet <- function(bucket=NULL, auth_gcs_file_path="./nunatsiavut-birds-f33436183827.json", ...){
 
-  temp_parquet_gulls <- tempfile()
+  temp_parquet <- tempfile()
 
   arrow::write_dataset(
     get_mb_tracks(...),
-    temp_parquet_gulls,
+    temp_parquet,
     basename_template = "part-{i}.parquet",
     format = "parquet",
     partitioning = c("vernacular", "tag_id"),
@@ -22,11 +22,11 @@ sync_gs_parquet <- function(bucket=NULL, auth_gcs_file_path="./nunatsiavut-birds
 
   googleCloudStorageR::gcs_auth(auth_gcs_file_path)
 
-  parquet_files <- list.files(temp_parquet_gulls, recursive = TRUE)
+  parquet_files <- list.files(temp_parquet, recursive = TRUE)
 
   parquet_files |> purrr::walk(\(f) {
-    googleCloudStorageR::gcs_upload(file.path(temp_parquet_gulls, f), name = f, bucket = bucket, predefinedAcl = "bucketLevel")
+    googleCloudStorageR::gcs_upload(file.path(temp_parquet, f), name = f, bucket = bucket, predefinedAcl = "bucketLevel")
   })
 
-  on.exit(file.remove(temp_parquet_gulls))
+  on.exit(file.remove(temp_parquet))
 }

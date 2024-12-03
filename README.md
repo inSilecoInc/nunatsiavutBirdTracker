@@ -25,7 +25,7 @@ The package provides a function to download data from Movebank, format it, and t
 ### Eiders study project
 
 ```r
-nunatsiavutBirdTracker::sync_gs_parquet(bucket="bird-locations", auth_gcs_file_path="./nunatsiavut-birds-f42790fd372b.json", study_id = 2854587542)
+nunatsiavutBirdTracker::sync_gs_parquet(bucket="bird-locations", auth_gcs_file_path="./nunatsiavut-birds-f42790fd372b.json", study_id = 4036904918)
 ```
 
 ### Gulls study project

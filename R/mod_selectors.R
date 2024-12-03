@@ -43,7 +43,7 @@ mod_selectors_ui <- function(id) {
                         sep = ",",
                         dragRange = FALSE,
                         step = 1,
-                        timeFormat = "%Y-%m-%d" 
+                        timeFormat = "%F" 
                     )
                 ),
                 hr()
@@ -128,7 +128,8 @@ mod_selectors_server <- function(id, r) {
                 "slider_date",
                 min = selectInd$min,
                 max = selectInd$max,
-                value = selectInd$max
+                value = selectInd$max,
+                timeFormat = "%F" 
             )
         })
 
