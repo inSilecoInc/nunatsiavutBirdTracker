@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "nunatsiavut-birds",
+  "private_key_id": "f42790fd372b4996643ce2289e1b977840fdd2ef",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDqr+fxe1hV1GJu\nH961VHBHUMUaPgBGF0hvy3oxFOJt6qg8V16jo8HbUM5PiozLu7xqOlfcqMZf2EHT\n2XSptsCQGiop0E3KaF4m+vyg+tTb/JqASZWUzRnhXYKAPqsJaCC5WjPPN60QntUm\no3q9jW0chtXeB00SHtAOLXeW/K9p+HA87sto1eOKzhvTFIUYR9W9O5rPbnJExVIP\na14F9XUd00O9VqQPomKnCg+17kbNug/ieuexHP9PUzvl8JeZKkRcmKfXORobpXUr\nNI34UtLJoDl6VZYZwwfD3rg27jSA9+c1UkjsB++ZtFs+RkPyh2sZYL6EZwUe5nPH\nWjOrEfi1AgMBAAECggEACnHNsXI7L4aw4r8fBZQ+cvi7QjxkKA+9NOHUtv57nUdb\njrlCCFJaEaKlATvkoY83XBrrR3ITcgyJJskqEgDaImT9Cg4FMu7g0dH1uvcEJiOL\nKg5xo8UE/oH6NC7rJGiynCJ8OnVQicl9Kae451q18mu7H5MqRkDXeD9kb8nLHLzQ\noIiKXVUbg3acJa7N2g80B1dWY6vlSpL7wg7AONVlnD/WZgpYozJCrDPcLz22vchC\nDmyke+mki8vslbPGxePBzMXE1prSt/sR0d/CZ5E3+ILKjGODnzCQTG/ZUML9MSay\nlz7TfIRjKhe3zAwfqbQzln/NsTzcmh/Av09a78P6QQKBgQDzNMhzSDbX/KdJPiW7\nylYA+lYdfBj/QZqGIVJl2g5qVr7lbfqhSx3WsbXq7mlQCS7fQXt9EWFKbxkv7LO8\nUS9Z/ynFYUQ+xGKu7YyFrebAS2QLImZLJ+B41ZEP4axd6uFzMp+dFROdQUTzo4Hl\nQA2ZVwXHLDoTlVtH1x8cpeQW/QKBgQD3CGX8zDtDNfW0a9Sr2sEjtTODQ5GEd4cp\nWDKh9TmgFCIA/YyxlwgoJpwGFGqEW6grL4kjTglBl+uaqglDhkBXNq0Pmdr+je6I\nBA6GY7vAL+9CQHcLgxnmNHLz8Dwbnu7clKAO2E+wvtD1K9S4iB+YD6XKBYE31+vv\nsUKs1eDCGQKBgFNmhF7UIsqKf6tkPnhZeIi5UBKoXcIa8yyP/LukvVDGEoyG3G23\nXrIjGulHfKHPpF03DWvkK+LkmlSO7Uvk40IPeHmRU1/a5KRsHcYxznGe6N3QnBel\nwxps0mQJ1ZwXUdy5PXcWpTVGDqkmJwNApekxqG+WwQu6KiVGpgqi8MbZAoGAVnoM\nKcjc3hRfpP8yfc6gWf2uwL7AjBzDpgeIAgY0XANwO+SGggybAGMzrzUqbJchcay8\nVy2UM/AYvBXWFFtE3sL3JkT30rCg1eCFrSnwqcCeAxVKFy+Xu2yU6Swp/olOmM02\nkrvKedbyk0D6wHZ2iObBZM00hPYDU+87pgFhItECgYEAx7JfNmhdoD39wAjjmHxT\n3pyOKA44d0sO8GqLDerQgRAsPDrpS91zZ3yRMMHi14yO3XXxerP/yvmf8IWs0M9M\n2lLeuG2d/juwCNNoa6o77Ima/IXpwWrrhaZ2BmLW67sHCYW+hDdmMt300cVyd61P\nE/0y9LmKuaShWlUflrmMeCg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "nunatsiavut-birds@nunatsiavut-birds.iam.gserviceaccount.com",
+  "client_id": "114611920530171492042",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/nunatsiavut-birds%40nunatsiavut-birds.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
