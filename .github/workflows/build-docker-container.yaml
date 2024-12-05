@@ -1,36 +1,57 @@
-name: Build and Push Docker Image
-
 on:
   push:
-    branches:
-      - '*'
+    branches: '*'
+
+name: Build and Push Docker Image
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Decode Google API key file
-      run: |
-        echo "${ secrets.GOOGLE_API_KEY_BASE64 }" | base64 --decode > google_api_key.json
+      - name: Decode Google API key file
+        run: |
+          echo "${ secrets.GOOGLE_API_KEY_BASE64 }" | base64 --decode > google_api_key.json
 
-    - name: Docker build
-      run: |
-        docker build \
-          --build-arg MOVEBANK_USER="${MOVEBANK_USER}" \
-          --build-arg MOVEBANK_PW="${MOVEBANK_PW}" \
-          -t ghcr.io/${{ github.repository }}/nunatsiavut-bird-tracker:latest .
-      env:
-        MOVEBANK_USER: ${{ secrets.MOVEBANK_USER }}
-        MOVEBANK_PW: ${{ secrets.MOVEBANK_PW }}
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.CR_PAT }}
 
-    - name: Authentification GitHub Container Registry
-      env:
-        CR_PAT: ${{ secrets.GITHUB_TOKEN }}
-      run: echo $CR_PAT | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      # Extract metadata (tags, labels) for Docker
+      # https://github.com/docker/metadata-action
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-    - name: Push image on GitHub Registry
-      run: docker push ghcr.io/${{ github.repository }}/nunatsiavut-bird-tracker:latest
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          build-args: |
+            MOVEBANK_USER=${{ secrets.MOVEBANK_USER }}
+            MOVEBANK_PW=${{ secrets.MOVEBANK_PW }} 
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

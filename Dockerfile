@@ -1,6 +1,13 @@
 # Base R Shiny image
 FROM rocker/shiny:4.3.0
 
+# Set credentials from github secrets
+ARG MOVEBANK_USER
+ARG MOVEBANK_PW
+
+ENV MOVEBANK_USER=${MOVEBANK_USER}
+ENV MOVEBANK_PW=${MOVEBANK_PW}
+
 # Install system dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -64,8 +71,8 @@ COPY . /srv/shiny-server/
 COPY shiny-server.conf /etc/shiny-server/shiny-server.conf
 
 # Set Google service account credentials
-COPY nunatsiavut-birds-f33436183827.json /srv/shiny-server/nunatsiavut-birds-f33436183827.json
-ENV GOOGLE_APPLICATION_CREDENTIALS=/srv/shiny-server/nunatsiavut-birds-f33436183827.json
+COPY google_api_key.json /srv/shiny-server/google_api_key.json
+ENV GOOGLE_APPLICATION_CREDENTIALS=/srv/shiny-server/google_api_key.json
 
 # Expose the application port (default Shiny server port)
 EXPOSE 3838
