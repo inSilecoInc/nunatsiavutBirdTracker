@@ -17,7 +17,7 @@
 #'
 #' @export 
 
-get_mb_tracks <- function(mb_user = Sys.getenv("MB_USER"), mb_password = Sys.getenv("MB_PASSWORD"), study_id = NULL){
+get_mb_tracks <- function(mb_user = Sys.getenv("MOVEBANK_USER"), mb_password = Sys.getenv("MOVEBANK_PW"), study_id = NULL){
 
     suppressWarnings({
         suppressMessages({
