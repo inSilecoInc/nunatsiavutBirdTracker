@@ -17,12 +17,23 @@ jobs:
       run: |
         echo "${ secrets.GOOGLE_API_KEY_BASE64 }" | base64 --decode > google_api_key.json
 
+    - name: 'Login to GitHub Container Registry'
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{github.actor}}
+        password: ${{secrets.GITHUB_TOKEN}}
+
+    - name: Lowercase github.repository
+      run: |
+        echo "IMAGE_NAME=${GITHUB_REPOSITORY@L}" >> ${GITHUB_ENV}
+
     - name: Docker build
       run: |
         docker build \
           --build-arg MOVEBANK_USER="${MOVEBANK_USER}" \
           --build-arg MOVEBANK_PW="${MOVEBANK_PW}" \
-          -t ghcr.io/${{ github.repository }}/nunatsiavut-bird-tracker:latest .
+          -t ghcr.io/${{ IMAGE_NAME }}/nunatsiavut-bird-tracker:latest .
       env:
         MOVEBANK_USER: ${{ secrets.MOVEBANK_USER }}
         MOVEBANK_PW: ${{ secrets.MOVEBANK_PW }}
@@ -32,5 +43,11 @@ jobs:
         CR_PAT: ${{ secrets.GITHUB_TOKEN }}
       run: echo $CR_PAT | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+      
+    - name: Authentification GitHub Container Registry
+      env:
+        CR_PAT: ${{ secrets.GITHUB_TOKEN }}
+      run: echo $CR_PAT | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
     - name: Push image on GitHub Registry
-      run: docker push ghcr.io/${{ github.repository }}/nunatsiavut-bird-tracker:latest
+      run: docker push ghcr.io/${{ IMAGE_NAME }}/nunatsiavut-bird-tracker:latest
