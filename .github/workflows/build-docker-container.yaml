@@ -1,34 +1,36 @@
-# https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#release-event-release
-# Trigger the create release workflow
+name: Build and Push Docker Image
+
 on:
   push:
-    branches: main
-  pull_request:
-    branches: main
-
-name: Build docker image
+    branches:
+      - '*'
 
 jobs:
-  push_to_registry:
-    name: Build docker image
+  build:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      R_KEEP_PKG_SOURCE: yes
 
     steps:
-      - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
-          
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-    
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: false
+    - name: Decode Google API key file
+      run: |
+        echo "${ secrets.GOOGLE_API_KEY_BASE64 }" | base64 --decode > google_api_key.json
+
+    - name: Docker build
+      run: |
+        docker build \
+          --build-arg MOVEBANK_USER="${MOVEBANK_USER}" \
+          --build-arg MOVEBANK_PW="${MOVEBANK_PW}" \
+          -t ghcr.io/${{ github.repository }}/nunatsiavut-bird-tracker:latest .
+      env:
+        MOVEBANK_USER: ${{ secrets.MOVEBANK_USER }}
+        MOVEBANK_PW: ${{ secrets.MOVEBANK_PW }}
+
+    - name: Authentification GitHub Container Registry
+      env:
+        CR_PAT: ${{ secrets.GITHUB_TOKEN }}
+      run: echo $CR_PAT | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+    - name: Push image on GitHub Registry
+      run: docker push ghcr.io/${{ github.repository }}/nunatsiavut-bird-tracker:latest
