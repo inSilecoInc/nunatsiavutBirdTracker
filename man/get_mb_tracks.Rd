@@ -5,8 +5,8 @@
 \title{Retrieve movebank tracks}
 \usage{
 get_mb_tracks(
-  mb_user = Sys.getenv("MB_USER"),
-  mb_password = Sys.getenv("MB_PASSWORD"),
+  mb_user = Sys.getenv("MOVEBANK_USER"),
+  mb_password = Sys.getenv("MOVEBANK_PW"),
   study_id = NULL
 )
 }
