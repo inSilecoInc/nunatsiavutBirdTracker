@@ -53,6 +53,6 @@ jobs:
           build-args: |
             MOVEBANK_USER=${{ secrets.MOVEBANK_USER }}
             MOVEBANK_PW=${{ secrets.MOVEBANK_PW }} 
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
