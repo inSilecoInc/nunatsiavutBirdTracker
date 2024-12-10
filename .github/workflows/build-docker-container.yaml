@@ -2,9 +2,7 @@
 # Trigger the create release workflow
 on:
   push:
-    branches: main
-  pull_request:
-    branches: main
+    branches: '*'
 
 name: Build docker image
 
