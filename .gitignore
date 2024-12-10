@@ -55,4 +55,5 @@ inst/app/www/static_docs/*.html
 .vscode
 
 # Credentials
-./nunatsiavut-birds-f33436183827.json
+./google_api_key.json
+nunatsiavut-birds-*.json
