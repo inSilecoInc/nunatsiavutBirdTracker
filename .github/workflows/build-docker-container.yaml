@@ -6,13 +6,15 @@ name: Build and Push Docker Image
 
 env:
   # Use docker.io for Docker Hub if empty
-  REGISTRY: ghcr.io
+  REGISTRY: gcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build:
+  push_to_registry:
     runs-on: ubuntu-latest
+    env:
+      R_KEEP_PKG_SOURCE: yes
     permissions:
       contents: read
       packages: write
@@ -26,15 +28,16 @@ jobs:
           BASE64_STRING: ${{ secrets.GOOGLE_API_KEY_BASE64 }}
         run: echo $BASE64_STRING > google_api_key.json
 
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.CR_PAT }}
+          credentials_json: ${{ secrets.GOOGLE_API_KEY_BASE64 }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Authorize Docker for GCR
+        run: gcloud auth configure-docker
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
