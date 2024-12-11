@@ -35,6 +35,9 @@ jobs:
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
+      
+      - name: Setup GCR projet
+        run: gcloud config set project nunatsiavut-birds
 
       - name: Authorize Docker for GCR
         run: gcloud auth configure-docker
