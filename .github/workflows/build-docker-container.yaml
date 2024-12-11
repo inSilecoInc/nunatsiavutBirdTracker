@@ -31,24 +31,19 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
+          project_id: nunatsiavut-birds
           credentials_json: ${{ secrets.GOOGLE_API_KEY_BASE64 }}
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-      
-      - name: Setup GCR projet
-        run: gcloud config set project nunatsiavut-birds
-
-      - name: Authorize Docker for GCR
-        run: gcloud auth configure-docker
-
-      # Extract metadata (tags, labels) for Docker
-      # https://github.com/docker/metadata-action
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v5
+      - name: Login to GAR
+        uses: docker/login-action@v3
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          registry: northamerica-northeast1-docker.pkg.dev
+          username: _json_key
+          password: ${{ secrets.GOOGLE_API_KEY_BASE64 }}
+
+      - name: Get tag
+        id: get-tag
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -60,5 +55,7 @@ jobs:
             MOVEBANK_USER=${{ secrets.MOVEBANK_USER }}
             MOVEBANK_PW=${{ secrets.MOVEBANK_PW }} 
           push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+             northamerica-northeast1-docker.pkg.dev/nunatsiavut-birds/insileco/nunatsiavutbirdtracker:${{ steps.get-tag.outputs.short_ref }}
+             northamerica-northeast1-docker.pkg.dev/nunatsiavut-birds/insileco/nunatsiavutbirdtracker:latest
           labels: ${{ steps.meta.outputs.labels }}
