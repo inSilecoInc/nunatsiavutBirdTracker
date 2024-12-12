@@ -56,6 +56,6 @@ jobs:
             MOVEBANK_PW=${{ secrets.MOVEBANK_PW }} 
           push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
           tags: |
-             northamerica-northeast1-docker.pkg.dev/nunatsiavut-birds/insileco/nunatsiavutbirdtracker:${{ steps.get-tag.outputs.short_ref }}
-             northamerica-northeast1-docker.pkg.dev/nunatsiavut-birds/insileco/nunatsiavutbirdtracker:latest
+             northamerica-northeast1-docker.pkg.dev/nunatsiavut-birds/insileco/nunatsiavut-bird-tracker:${{ steps.get-tag.outputs.short_ref }}
+             northamerica-northeast1-docker.pkg.dev/nunatsiavut-birds/insileco/nunatsiavut-bird-tracker:latest
           labels: ${{ steps.meta.outputs.labels }}
