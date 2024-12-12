@@ -18,6 +18,28 @@ source("dev/run_dev.R")
 
 ## Data synchronization task
 
+### Run the sync bird locations task locally
+
+```r
+nunatsiavutBirdTracker::sync_gs_metadata(bucket="bird-metadata", auth_gcs_file_path="google_api_key.json")
+```
+
+### Declare Google schedule task
+
+```r
+gcloud run jobs create sync-bird-metadata \
+    --region=us-central1 \
+    --project nunatsiavut-birds \
+    --image=northamerica-northeast1-docker.pkg.dev/nunatsiavut-birds/insileco/nunatsiavut-bird-tracker:latest \
+    --command=/bin/bash \
+    --args="^@^-c@echo 'Starting the task execution...' && cd /srv/shiny-server && Rscript -e \"print('R script is starting'); nunatsiavutBirdTracker::sync_gs_metadata(bucket='bird-metadata', auth_gcs_file_path='google_api_key.json'); print('R script completed')\" && echo 'Task execution completed successfully.'" \
+    --cpu=1 \
+    --memory=512Mi \
+    --max-retries=3
+```
+
+## Bird locations synchronization task
+
 The package includes a function, `sync_gs_parquet`, to download data from Movebank, format it as Parquet files, and upload them to Google Cloud Storage (GCS).
 
 **Note:** It is recommended to use the Docker container to run the synchronization task because it includes:
@@ -30,7 +52,7 @@ If running the task locally:
 Add the Google service account key (`google_api_key.json`) to the root of the repository.
 Configure a `.Renviron` file with your Movebank credentials (`MOVEBANK_USERNAME` and `MOVEBANK_PASSWORD`).
 
-### Run the task locally
+### Run the sync bird locations task locally
 
  The function `sync_gs_parquet` writes the data in Parquet format locally and uploads each Parquet partition file to an S3 bucket.
 
@@ -46,7 +68,7 @@ nunatsiavutBirdTracker::sync_gs_parquet(bucket="bird-locations", auth_gcs_file_p
 nunatsiavutBirdTracker::sync_gs_parquet(bucket="bird-locations", auth_gcs_file_path="google_api_key.json", study_id = 2854587542)
 ```
 
-### Run containerized task
+### Run the sync locations containerized task
 
 Build the docker image
 
@@ -97,6 +119,7 @@ gcloud run jobs create sync-data-gulls \
 ```sh
 gcloud scheduler jobs create http sync-data-gulls-scheduled \
     --project nunatsiavut-birds \
+    --oauth-service-account-email=run-scheduled-jobs@nunatsiavut-birds.iam.gserviceaccount.com \
     --schedule="*/30 * * * *" \
     --uri="https://us-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/nunatsiavut-birds/jobs/sync-data-gulls:run" \
     --http-method=POST \
@@ -123,6 +146,7 @@ gcloud run jobs create sync-data-eiders \
 ```sh
 gcloud scheduler jobs create http sync-data-eiders-scheduled \
     --project nunatsiavut-birds \
+    --oauth-service-account-email=run-scheduled-jobs@nunatsiavut-birds.iam.gserviceaccount.com \
     --schedule="*/30 * * * *" \
     --uri="https://us-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/nunatsiavut-birds/jobs/sync-data-eiders:run" \
     --http-method=POST \

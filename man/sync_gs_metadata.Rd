@@ -10,8 +10,6 @@ sync_gs_metadata(bucket = NULL, auth_gcs_file_path = "./google_api_key.json")
 \item{bucket}{Character. The name of the GCS bucket where the RDS file will be uploaded. Cannot be `NULL`.}
 
 \item{auth_gcs_file_path}{Character. The path to the GCS JSON credentials file. Default is `"./google_api_key.json"`.}
-
-\item{...}{Additional arguments passed to the `googlesheets4::read_sheet` function.}
 }
 \description{
 This function reads bird metadata from a Google Sheets document, cleans the column names,
