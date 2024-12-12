@@ -37,13 +37,13 @@ The package provides a function to download data from Movebank, format it, and t
 #### Eiders study project
 
 ```r
-nunatsiavutBirdTracker::sync_gs_parquet(bucket="bird-locations", auth_gcs_file_path="./nunatsiavut-birds-f42790fd372b.json", study_id = 4036904918)
+nunatsiavutBirdTracker::sync_gs_parquet(bucket="bird-locations", auth_gcs_file_path="google_api_key.json", study_id = 4036904918)
 ```
 
 #### Gulls study project
 
 ```r
-nunatsiavutBirdTracker::sync_gs_parquet(bucket="bird-locations", auth_gcs_file_path="./nunatsiavut-birds-f42790fd372b.json", study_id = 2854587542)
+nunatsiavutBirdTracker::sync_gs_parquet(bucket="bird-locations", auth_gcs_file_path="google_api_key.json", study_id = 2854587542)
 ```
 
 ### Run containerized task
@@ -70,34 +70,64 @@ Replace `<MOVEBANK_STUDY_ID>` with:
 
 ### Run on Google cloud as scheduled task 
 
+Login
+
+```sh
+gcloud auth login
+```
+
+**Note:** Install the gcloud CLI client following https://cloud.google.com/sdk/docs/install
+
 Declare Gulls sync job
 
 ```sh
 gcloud run jobs create sync-data-gulls \
     --region=us-central1 \
-    --image=northamerica-northeast1-docker.pkg.dev/nunatsiavut-birds/insileco/nunatsiavutbirdtracker:latest \
+    --project nunatsiavut-birds \
+    --image=northamerica-northeast1-docker.pkg.dev/nunatsiavut-birds/insileco/nunatsiavut-bird-tracker:latest \
     --command=/bin/bash \
-    --args="-c,echo 'Starting the task execution...' && cd /srv/shiny-server && echo 'Current directory: $(pwd)' && Rscript -e \"print('R script is starting'); nunatsiavutBirdTracker::sync_gs_parquet(bucket='bird-locations', auth_gcs_file_path='google_api_key.json', study_id=Sys.getenv('STUDY_ID')); print('R script completed')\" && echo 'Task execution completed successfully.'" \
-    --set-env-vars=STUDY_ID=2854587542 \
+    --args="^@^-c@echo 'Starting the task execution...' && cd /srv/shiny-server && Rscript -e \"print('R script is starting'); nunatsiavutBirdTracker::sync_gs_parquet(bucket='bird-locations', auth_gcs_file_path='google_api_key.json', study_id=2854587542); print('R script completed')\" && echo 'Task execution completed successfully.'" \
     --cpu=1 \
-    --memory=512Mi \
-    --timeout=600s \
+    --memory=1024Mi \
     --max-retries=3
+```
+
+Set CRON job
+
+```sh
+gcloud scheduler jobs create http sync-data-gulls-scheduled \
+    --project nunatsiavut-birds \
+    --schedule="*/30 * * * *" \
+    --uri="https://us-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/nunatsiavut-birds/jobs/sync-data-gulls:run" \
+    --http-method=POST \
+    --headers="Content-Type=application/json" \
+    --location="us-central1"
 ```
 
 Declare Eiders sync job
 
 ```sh
-gcloud run jobs create sync-data-gulls \
+gcloud run jobs create sync-data-eiders \
     --region=us-central1 \
-    --image=northamerica-northeast1-docker.pkg.dev/nunatsiavut-birds/insileco/nunatsiavutbirdtracker:latest \
+    --project nunatsiavut-birds \
+    --image=northamerica-northeast1-docker.pkg.dev/nunatsiavut-birds/insileco/nunatsiavut-bird-tracker:latest \
     --command=/bin/bash \
-    --args="-c,echo 'Starting the task execution...' && cd /srv/shiny-server && echo 'Current directory: $(pwd)' && Rscript -e \"print('R script is starting'); nunatsiavutBirdTracker::sync_gs_parquet(bucket='bird-locations', auth_gcs_file_path='google_api_key.json', study_id=Sys.getenv('STUDY_ID')); print('R script completed')\" && echo 'Task execution completed successfully.'" \
-    --set-env-vars=STUDY_ID=4036904918 \
+    --args="^@^-c@echo 'Starting the task execution...' && cd /srv/shiny-server && Rscript -e \"print('R script is starting'); nunatsiavutBirdTracker::sync_gs_parquet(bucket='bird-locations', auth_gcs_file_path='google_api_key.json', study_id=4036904918); print('R script completed')\" && echo 'Task execution completed successfully.'" \
     --cpu=1 \
     --memory=512Mi \
-    --timeout=600s \
     --max-retries=3
+```
+
+Set CRON job
+
+```sh
+gcloud scheduler jobs create http sync-data-eiders-scheduled \
+    --project nunatsiavut-birds \
+    --schedule="*/30 * * * *" \
+    --uri="https://us-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/nunatsiavut-birds/jobs/sync-data-eiders:run" \
+    --http-method=POST \
+    --headers="Content-Type=application/json" \
+    --location="us-central1"
 ```
 
 ### Contributing
