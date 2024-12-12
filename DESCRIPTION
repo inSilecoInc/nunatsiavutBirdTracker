@@ -17,6 +17,7 @@ Imports:
     glue (>= 1.6.2),
     golem (>= 0.4.1),
     googleCloudStorageR (>= 0.7.0),
+    googlesheets4 (>= 1.1.1),
     htmltools (>= 0.5.8.1),
     leaflet (>= 2.2.1),
     leaflet.extras2 (>= 1.2.2),

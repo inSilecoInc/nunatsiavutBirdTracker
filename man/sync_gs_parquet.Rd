@@ -2,21 +2,30 @@
 % Please edit documentation in R/sync_gs_parquet.R
 \name{sync_gs_parquet}
 \alias{sync_gs_parquet}
-\title{Write parquet tracks in GCS bucket}
+\title{Write Parquet Tracks to a GCS Bucket}
 \usage{
 sync_gs_parquet(
   bucket = NULL,
-  auth_gcs_file_path = "./nunatsiavut-birds-f33436183827.json",
+  auth_gcs_file_path = "./google_api_key.json",
   ...
 )
 }
 \arguments{
-\item{bucket}{GCS bucket name.}
+\item{bucket}{Character. The name of the GCS bucket where Parquet files will be uploaded.}
 
-\item{auth_gcs_file_path}{movebank password.}
+\item{auth_gcs_file_path}{Character. The path to the GCS JSON credentials file (default: `"./google_api_key.json"`).}
 
-\item{...}{arguments passed to get_mb_tracks function}
+\item{...}{Additional arguments passed to the `get_mb_tracks` function.}
 }
 \description{
-Write parquet files with animals tracks into the target GCS bucket.
+This function writes Parquet files containing animal tracks into a specified Google Cloud Storage (GCS) bucket. 
+It partitions the data by `vernacular` and `tag_id` and handles authentication using a JSON credentials file.
+}
+\details{
+The function:
+1. Generates a temporary directory for storing the Parquet files.
+2. Writes datasets partitioned by `vernacular` and `tag_id` into the temporary directory.
+3. Authenticates with Google Cloud using the specified JSON credentials.
+4. Uploads the generated Parquet files to the specified GCS bucket.
+5. Cleans up temporary files on exit.
 }
