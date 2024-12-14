@@ -16,15 +16,17 @@ pak::pak("inSilecoInc/nunatsiavutBirdTracker")
 source("dev/run_dev.R")
 ```
 
-## Data synchronization task
+## Birds metadata synchronization task
 
-### Run the sync bird locations task locally
+### Run the sync bird metadata task locally
 
 ```r
 nunatsiavutBirdTracker::sync_gs_metadata(bucket="bird-metadata", auth_gcs_file_path="google_api_key.json")
 ```
 
-### Declare Google schedule task
+### Sync bird metadata google metadata task
+
+Declare the task
 
 ```r
 gcloud run jobs create sync-bird-metadata \
@@ -36,6 +38,19 @@ gcloud run jobs create sync-bird-metadata \
     --cpu=1 \
     --memory=512Mi \
     --max-retries=3
+```
+
+Set the schedule
+
+```r
+gcloud scheduler jobs create http sync-bird-metadata-scheduled \
+    --project nunatsiavut-birds \
+    --oauth-service-account-email=run-scheduled-jobs@nunatsiavut-birds.iam.gserviceaccount.com \
+    --schedule="*/30 * * * *" \
+    --uri="https://us-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/nunatsiavut-birds/jobs/sync-data-gulls:run" \
+    --http-method=POST \
+    --headers="Content-Type=application/json" \
+    --location=us-central1
 ```
 
 ## Bird locations synchronization task
