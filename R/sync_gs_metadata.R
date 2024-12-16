@@ -9,7 +9,6 @@
 #'
 #' @export
 sync_gs_metadata <- function(bucket=NULL, auth_gcs_file_path="/home/steve/git/nunatsiavutBirdTracker/google_api_key.json"){
-    gargle::credentials_service_account(auth_gcs_file_path)
     birds_md <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1XiksWymZ8Mam9moxwTxwkK5UzuQ5KDzZRahdr72V-oM/edit?usp=sharing") |>
         janitor::clean_names()
 

@@ -21,6 +21,15 @@ mod_bird_description_server <- function(id, r){
       req(r$tag_id, birds_metadata)
       selDesc <- dplyr::filter(birds_metadata, tag_id == r$tag_id)
       r$selectedBirdDescription <- selDesc
+
+      googleCloudStorageR::gcs_auth("./google_api_key.json")
+
+      # Set photos
+      bucketName <- "assets-photos"
+      photos <- googleCloudStorageR::gcs_list_objects(bucket = bucketName, prefix = r$tag_id) |>
+        dplyr::pull(name) |>
+        googleCloudStorageR::gcs_download_url(bucket = bucketName)
+      
       output$description <- renderUI({
         bslib::card(
           bslib::card_body(
@@ -33,7 +42,7 @@ mod_bird_description_server <- function(id, r){
                 br(),
                 span(class="badge rounded-pill bg-primary fw-lighter", paste("#Tag ID - ", selDesc$tag_id),  style="font-size: .5em;")
               ),
-              img(src = "www/img/201642.png", class = "figure-img img-fluid rounded w-75", alt = "Test"),
+              slickR::slickR(obj = photos, height=300, width = "95%", padding = 10) + slickR::settings(dots = TRUE),
               tagList(
                 tags$ul(class="list-group list-group-flush",
                   tags$li(class = "list-group-item", 
