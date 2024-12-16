@@ -4,7 +4,10 @@
 \alias{sync_gs_metadata}
 \title{Upload Bird Metadata to GCS Bucket}
 \usage{
-sync_gs_metadata(bucket = NULL, auth_gcs_file_path = "./google_api_key.json")
+sync_gs_metadata(
+  bucket = NULL,
+  auth_gcs_file_path = "/home/steve/git/nunatsiavutBirdTracker/google_api_key.json"
+)
 }
 \arguments{
 \item{bucket}{Character. The name of the GCS bucket where the RDS file will be uploaded. Cannot be `NULL`.}
