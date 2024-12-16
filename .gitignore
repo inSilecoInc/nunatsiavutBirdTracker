@@ -55,4 +55,8 @@ inst/app/www/static_docs/*.html
 .vscode
 
 # Credentials
-./google_api_key.json
+google_api_key.json
+
+
+# 
+launch.R
