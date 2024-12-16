@@ -26,10 +26,19 @@ mod_bird_description_server <- function(id, r){
 
       # Set photos
       bucketName <- "assets-photos"
-      photos <- googleCloudStorageR::gcs_list_objects(bucket = bucketName, prefix = r$tag_id) |>
-        dplyr::pull(name) |>
-        googleCloudStorageR::gcs_download_url(bucket = bucketName)
+      gcs_photos <- googleCloudStorageR::gcs_list_objects(bucket = bucketName, prefix = r$tag_id) 
       
+      if(nrow(gcs_photos) > 0) {
+        photos <- gcs_photos |> dplyr::pull(name) |>
+        googleCloudStorageR::gcs_download_url(bucket = bucketName)
+      } else if(selDesc$species == "Somateria mollissima") {
+        photos <- "https://images.phylopic.org/images/6db76232-0ff7-4599-a8c8-0070fd7dd51c/vector.svg"
+      } else if(stringr::str_detect(selDesc$species, "Larus")) {
+        photos <- "https://images.phylopic.org/images/6f87dbf2-289a-4c57-b26c-9384993c37d4/vector.svg"
+      } else {
+        photos <- "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Icon-round-Question_mark.jpg/600px-Icon-round-Question_mark.jpg?20100222190926"
+      }
+   
       output$description <- renderUI({
         bslib::card(
           bslib::card_body(
