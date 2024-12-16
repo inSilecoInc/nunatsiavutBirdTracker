@@ -26,11 +26,6 @@ mod_selectors_ui <- function(id) {
                 12,
                 hr(),
                 h5("Track their movement"),
-                # numericInput(
-                #     ns("res_time"),
-                #     "Time resolution (in number of days)",
-                #     value = 1, min = 1, max = 30, step = 1
-                #     ),
                 div(
                     class = "m-2",
                     sliderInput(
@@ -123,14 +118,16 @@ mod_selectors_server <- function(id, r) {
             r$tag_id <- input$tag_id
             selectInd <- r$selectors |>
                 dplyr::filter(tag_id == input$tag_id)
-            updateSliderInput(
-                session,
-                "slider_date",
-                min = selectInd$min,
-                max = selectInd$max,
-                value = selectInd$max,
-                timeFormat = "%F" 
-            )
+            if (nrow(selectInd)) {
+                updateSliderInput(
+                    session,
+                    "slider_date",
+                    min = selectInd$min,
+                    max = selectInd$max,
+                    value = selectInd$max,
+                    timeFormat = "%F" 
+                )
+            }
         })
 
         observe({

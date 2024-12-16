@@ -14,11 +14,13 @@ Imports:
     config (>= 0.3.2),
     dplyr (>= 1.1.4),
     fs (>= 1.6.3),
+    gargle (>= 1.5.2),
     glue (>= 1.6.2),
     golem (>= 0.4.1),
     googleCloudStorageR (>= 0.7.0),
     googlesheets4 (>= 1.1.1),
     htmltools (>= 0.5.8.1),
+    janitor (>= 2.2.0),
     leaflet (>= 2.2.1),
     leaflet.extras2 (>= 1.2.2),
     lubridate (>= 1.9.3),
@@ -33,7 +35,6 @@ Imports:
     shiny (>= 1.7.4),
     shinyjs (>= 2.1)
 Suggests: 
-    janitor (>= 2.2.0),
     testthat (>= 3.0.0),
     tibble (>= 3.2.1),
     utils

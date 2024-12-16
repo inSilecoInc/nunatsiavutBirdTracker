@@ -20,20 +20,27 @@ base_map <- function() {
         )
 }
 
-fetch_spatial_ind <- function(ds = NULL, ind = NULL, year = NULL, 
-    max_date = NULL) {
-    data <- ds |>
+fetch_spatial_ind <- function(ds = NULL, ind = NULL) {
+    cli::cli_alert_info("Fetching spatial informations for {ind}.")
+    ds |>
         dplyr::collect() |>
         dplyr::filter(tag_id == ind) |>
         dplyr::select(-species, -vernacular, -band_id)
+}
 
+
+# use data frame from fetch spatial then fileter
+get_track_lines <- function(.df, max_date = NULL, year = NULL) {
+    cli::cli_alert_info("Creating track lines.")
     if (!is.null(year)) {
-        data <- dplyr::filter(data, format(datetime, format = "%Y") == year)
-    }
-    if (!is.null(max_date)) {
-        data <- data |> 
+        data <- dplyr::filter(.df, format(datetime, format = "%Y") == year)
+    } else if (!is.null(max_date)) {
+        data <- .df |>
             dplyr::filter(datetime <= max_date)
+    } else {
+        stop("either `max_date` or `year` must be non-NULL")
     }
+
 
     traj_points <- data |>
         dplyr::arrange(datetime) |>
