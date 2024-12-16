@@ -27,13 +27,17 @@ mod_map_server <- function(id, r) {
             )
         })
 
-        spat_line <- reactive({
-            cli::cli_alert_info("Map - Fetch spatial informations for {isolate(r$tag_id)}")
+
+        get_data <- reactive({
             fetch_spatial_ind(
                 ds = r$arrow_dataset,
-                ind = r$tag_id,
-                max_date = r$max_date
+                ind = r$tag_id
             )
+        })
+
+        spat_line <- reactive({
+            get_data() |>
+                get_track_lines(max_date = r$max_date)
         })
 
         observe({
