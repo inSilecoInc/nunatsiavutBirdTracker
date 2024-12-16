@@ -14,7 +14,6 @@ Imports:
     config (>= 0.3.2),
     dplyr (>= 1.1.4),
     fs (>= 1.6.3),
-    gargle (>= 1.5.2),
     glue (>= 1.6.2),
     golem (>= 0.4.1),
     googleCloudStorageR (>= 0.7.0),
