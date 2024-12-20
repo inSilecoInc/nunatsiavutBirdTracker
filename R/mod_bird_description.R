@@ -30,7 +30,7 @@ mod_bird_description_server <- function(id, r){
       
       if(nrow(gcs_photos) > 0) {
         photos <- gcs_photos |> dplyr::pull(name) |>
-        googleCloudStorageR::gcs_download_url(bucket = bucketName)
+        googleCloudStorageR::gcs_download_url(bucket = bucketName, public = TRUE)
       } else if(selDesc$species == "Somateria mollissima") {
         photos <- "https://images.phylopic.org/images/6db76232-0ff7-4599-a8c8-0070fd7dd51c/vector.svg"
       } else if(stringr::str_detect(selDesc$species, "Larus")) {

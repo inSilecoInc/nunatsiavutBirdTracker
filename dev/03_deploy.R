@@ -38,7 +38,6 @@ golem::add_dockerfile_with_renv()
 ## If you want to deploy to ShinyProxy
 golem::add_dockerfile_with_renv_shinyproxy()
 
-
 # Deploy to Posit Connect or ShinyApps.io
 # In command line.
 rsconnect::deployApp(
@@ -51,7 +50,9 @@ rsconnect::deployApp(
     "data/",
     "NAMESPACE",
     "DESCRIPTION",
-    "app.R"
+    "app.R",
+    "google_api_key.json",
+    ".Renviron"
   ),
   appId = rsconnect::deployments(".")$appID,
   lint = FALSE,
