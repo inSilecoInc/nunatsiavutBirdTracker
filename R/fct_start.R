@@ -24,6 +24,11 @@ fct_start <- function() {
         bucket = "bird-metadata",
         parseFunction = googleCloudStorageR::gcs_parse_rds
     )
+
+    # Load birds locations
+    bird_locations <<- arrow::gs_bucket("bird-locations") |>
+        arrow::open_dataset() |>
+        dplyr::collect()
     
     onStop(clean_up_app)
 }

@@ -2,14 +2,15 @@
 #'
 #' @description A function to select a map.
 #'
-#' @param ds an arrow::gs_bucket object.
+#' @param data the birds locations dataset, see details
+#'
+#' @details 
 #'
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd
 
-fetch_input_choices <- function(ds = NULL){
-    data <- ds |> dplyr::collect()
+fetch_input_choices <- function(data){
 
     loc_years <- data |>
         dplyr::mutate(year = lubridate::year(datetime)) |>

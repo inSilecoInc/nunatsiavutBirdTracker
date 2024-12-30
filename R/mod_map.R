@@ -30,7 +30,7 @@ mod_map_server <- function(id, r) {
 
         get_data <- reactive({
             fetch_spatial_ind(
-                ds = r$arrow_dataset,
+                data = bird_locations,
                 ind = r$tag_id
             )
         })

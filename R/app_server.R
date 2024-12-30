@@ -6,8 +6,7 @@
 app_server <- function(input, output, session) {
 
     r <- reactiveValues(
-        disclaimer_agreed = FALSE,
-        arrow_bucket = arrow::gs_bucket("bird-locations")
+        disclaimer_agreed = FALSE
     )
 
     # disclaimer

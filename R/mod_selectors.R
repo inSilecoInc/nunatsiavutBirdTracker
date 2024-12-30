@@ -60,15 +60,16 @@ mod_selectors_server <- function(id, r) {
         ns <- session$ns
 
         observe({
-            cli::cli_alert_info("Selectors - Set dataset")
-            r$arrow_dataset <- arrow::open_dataset(r$arrow_bucket)
             cli::cli_alert_info("Selectors - Set choices")
-            r$selectors <- r$arrow_dataset |>
-                fetch_input_choices()
+        
+            r$selectors <- fetch_input_choices(data = bird_locations)
+            
             cli::cli_alert_info("Selectors - Set vernacular choices")
+
             r$vernacular_choices <- r$selectors |>
                 dplyr::pull(vernacular) |>
                 unique()
+            
             updateSelectInput(
                 session,
                 "vernacular",
@@ -79,13 +80,20 @@ mod_selectors_server <- function(id, r) {
 
         observe({
             cli::cli_alert_info("Selectors - Set vernacular name")
-            r$tag_ids <- r$selectors |>
+
+            ids_name <- r$selectors |>
                 dplyr::filter(vernacular == input$vernacular) |>
-                dplyr::pull(tag_id)
+                dplyr::left_join(dplyr::select(birds_metadata, tag_id, name)) |>
+                dplyr::mutate(name = ifelse(is.na(name), glue::glue("Unnamed ({tag_id})"),  glue::glue("{name} ({tag_id})"))) |> dplyr::select(name, tag_id)
+
+            r$tag_ids <- ids_name$tag_id
+            choices <- as.list(ids_name$tag_id) |>
+                setNames(ids_name$name)
+
             updateSelectInput(
                 session,
                 "tag_id",
-                choices = r$tag_ids
+                choices = choices
             )
         })
 
