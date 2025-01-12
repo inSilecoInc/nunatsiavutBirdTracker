@@ -28,7 +28,7 @@ nunatsiavutBirdTracker::sync_gs_metadata(bucket="bird-metadata", auth_gcs_file_p
 
 Declare the task
 
-```r
+```sh
 gcloud run jobs create sync-bird-metadata \
     --region=us-central1 \
     --project nunatsiavut-birds \
@@ -42,15 +42,16 @@ gcloud run jobs create sync-bird-metadata \
 
 Set the schedule
 
-```r
+```sh
 gcloud scheduler jobs create http sync-bird-metadata-scheduled \
-    --project nunatsiavut-birds \
+    --project=nunatsiavut-birds \
     --oauth-service-account-email=run-scheduled-jobs@nunatsiavut-birds.iam.gserviceaccount.com \
     --schedule="0 9 1 * *" \
     --uri="https://us-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/nunatsiavut-birds/jobs/sync-data-gulls:run" \
     --http-method=POST \
     --headers="Content-Type=application/json" \
-    --location=us-central1
+    --location=us-east1 \
+    --time-zone="America/Toronto"
 ```
 
 ## Bird locations synchronization task
@@ -133,13 +134,14 @@ gcloud run jobs create sync-data-gulls \
 
 ```sh
 gcloud scheduler jobs create http sync-data-gulls-scheduled \
-    --project nunatsiavut-birds \
+    --project=nunatsiavut-birds \
     --oauth-service-account-email=run-scheduled-jobs@nunatsiavut-birds.iam.gserviceaccount.com \
     --schedule="0 9 1 * *" \
     --uri="https://us-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/nunatsiavut-birds/jobs/sync-data-gulls:run" \
     --http-method=POST \
     --headers="Content-Type=application/json" \
-    --location=us-central1
+    --location=us-east1 \
+    --time-zone="America/Toronto"
 ```
 
 #### Declare Eiders sync job
@@ -160,14 +162,19 @@ gcloud run jobs create sync-data-eiders \
 
 ```sh
 gcloud scheduler jobs create http sync-data-eiders-scheduled \
-    --project nunatsiavut-birds \
+    --project=nunatsiavut-birds \
     --oauth-service-account-email=run-scheduled-jobs@nunatsiavut-birds.iam.gserviceaccount.com \
     --schedule="0 9 1 * *" \
     --uri="https://us-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/nunatsiavut-birds/jobs/sync-data-eiders:run" \
     --http-method=POST \
     --headers="Content-Type=application/json" \
-    --location="us-central1"
+    --location=us-east1 \
+    --time-zone="America/Toronto"
 ```
+
+### DevOps sequence diagram
+
+![](inst/puml/devops.png)
 
 ### Contributing
 

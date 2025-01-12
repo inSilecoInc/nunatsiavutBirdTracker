@@ -1,0 +1,47 @@
+@startuml
+title CI/CD Workflow for Google Cloud Run, Scheduler, and Shiny App
+
+actor Developer as Dev
+participant "GitHub Repository" as Repo
+participant "GitHub Actions" as Actions
+participant "Google Artifact Registry" as Artifactory
+participant "Google Cloud Run" as CloudRun
+participant "Google Cloud Scheduler" as CloudScheduler
+database "Bird Metadata Bucket\n(bird-metadata)" as MetadataBucket
+database "Bird Locations Bucket\n(bird-locations)" as LocationsBucket
+participant "Shiny App\nhttps://insileco-inc.shinyapps.io/nunatsiavutBirdTracker/" as ShinyApp
+
+Dev -> Repo: Push code to main branch
+Repo -> Actions: Trigger CI/CD pipeline
+Actions -> Actions: Build Docker image
+Actions -> Actions: Inject secrets
+Actions -> Artifactory: Push Docker image
+
+note over Artifactory, CloudRun
+  Deploying the Docker image to Cloud Run
+  is a **manual operation** triggered by the developer.
+end note
+
+Artifactory -> CloudRun: Deploy Docker image (manual)
+CloudRun -> CloudScheduler: Configure scheduled tasks
+
+note right of CloudScheduler
+  Scheduling details:
+  - sync-bird-metadata-scheduled: Every Monday at 9:00 AM
+  - sync-data-gulls-scheduled: 1st of every month at 9:00 AM
+  - sync-data-eiders-scheduled: 1st of every month at 9:00 AM
+end note
+
+CloudScheduler -> CloudRun: Trigger Job: sync-bird-metadata-scheduled
+CloudRun -> MetadataBucket: Store metadata
+MetadataBucket -> ShinyApp: Expose metadata
+
+CloudScheduler -> CloudRun: Trigger Job: sync-data-gulls-scheduled
+CloudRun -> LocationsBucket: Store locations
+LocationsBucket -> ShinyApp: Expose locations
+
+CloudScheduler -> CloudRun: Trigger Job: sync-data-eiders-scheduled
+CloudRun -> LocationsBucket: Store locations
+LocationsBucket -> ShinyApp: Expose locations
+
+@enduml
