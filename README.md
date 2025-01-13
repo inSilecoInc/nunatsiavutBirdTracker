@@ -46,8 +46,8 @@ Set the schedule
 gcloud scheduler jobs create http sync-bird-metadata-scheduled \
     --project=nunatsiavut-birds \
     --oauth-service-account-email=run-scheduled-jobs@nunatsiavut-birds.iam.gserviceaccount.com \
-    --schedule="0 9 1 * *" \
-    --uri="https://us-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/nunatsiavut-birds/jobs/sync-data-gulls:run" \
+    --schedule="0 9 * * 1" \
+    --uri="https://us-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/nunatsiavut-birds/jobs/sync-bird-metadata:run" \
     --http-method=POST \
     --headers="Content-Type=application/json" \
     --location=us-east1 \
