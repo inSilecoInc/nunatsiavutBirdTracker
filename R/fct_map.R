@@ -22,9 +22,10 @@ base_map <- function() {
 
 fetch_spatial_ind <- function(data = NULL, ind = NULL) {
     cli::cli_alert_info("Map - Fetching spatial informations for {ind}.")
-        data |> 
-        dplyr::filter(tag_id == ind) |>
-        dplyr::select(-species, -vernacular, -band_id)
+        data |>
+            dplyr::filter(tag_id == as.numeric(ind)) |>
+            dplyr::collect() |>
+            dplyr::select(-species, -vernacular, -band_id)
 }
 
 
