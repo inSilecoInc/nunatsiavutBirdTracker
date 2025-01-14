@@ -27,8 +27,7 @@ fct_start <- function() {
 
     # Load birds locations
     bird_locations <<- arrow::gs_bucket("bird-locations") |>
-        arrow::open_dataset() |>
-        dplyr::collect()
+        arrow::open_dataset() 
     
     onStop(clean_up_app)
 }
